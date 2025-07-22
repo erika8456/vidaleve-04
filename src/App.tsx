@@ -14,6 +14,7 @@ import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Cadastro from "./pages/Cadastro";
 import Assinatura from "./pages/Assinatura";
+import ImageBank from "./pages/ImageBank";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -29,6 +30,7 @@ const App = () => (
           <Route path="/login" element={<Login />} />
           <Route path="/cadastro" element={<Cadastro />} />
           <Route path="/assinatura" element={<Assinatura />} />
+          <Route path="/banco-imagens" element={<Layout><ImageBank /></Layout>} />
           <Route path="/dashboard" element={<Layout><Dashboard /></Layout>} />
           <Route path="/chat" element={<Layout><Chat /></Layout>} />
           <Route path="/meu-plano" element={<Layout><MeuPlano /></Layout>} />

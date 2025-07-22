@@ -12,10 +12,10 @@ const Index = () => {
       <section className="gradient-primary text-white py-20 px-6">
         <div className="max-w-6xl mx-auto text-center">
           <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-6">
-            <span className="text-3xl font-bold">N</span>
+            <span className="text-3xl font-bold">VL</span>
           </div>
           <h1 className="text-5xl md:text-6xl font-bold mb-6">
-            NutriSênior AI
+            Vida Leve
           </h1>
           <p className="text-xl md:text-2xl mb-8 opacity-90 max-w-3xl mx-auto leading-relaxed">
             Nutrição inteligente e personalizada para pessoas com mais de 50 anos. 
@@ -43,7 +43,7 @@ const Index = () => {
       <section className="py-20 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">Por que escolher o NutriSênior?</h2>
+            <h2 className="text-4xl font-bold mb-4">Por que escolher o Vida Leve?</h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               Desenvolvido especificamente para as necessidades nutricionais de pessoas maduras
             </p>
@@ -124,9 +124,9 @@ const Index = () => {
       <footer className="bg-primary text-primary-foreground py-12 px-6">
         <div className="max-w-6xl mx-auto text-center">
           <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
-            <span className="text-xl font-bold">N</span>
+            <span className="text-xl font-bold">VL</span>
           </div>
-          <h3 className="text-xl font-semibold mb-2">NutriSênior AI</h3>
+          <h3 className="text-xl font-semibold mb-2">Vida Leve</h3>
           <p className="opacity-80">Nutrição inteligente para uma vida mais saudável</p>
         </div>
       </footer>

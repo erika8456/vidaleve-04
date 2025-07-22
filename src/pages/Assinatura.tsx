@@ -8,7 +8,7 @@ import { Check, Crown, Star, Zap, ArrowRight } from "lucide-react"
 const plans = [
   {
     name: "Básico",
-    price: "19,90",
+    price: "4",
     period: "mês",
     description: "Perfeito para começar sua jornada",
     features: [
@@ -18,11 +18,12 @@ const plans = [
       "Suporte por email"
     ],
     icon: Star,
-    popular: false
+    popular: false,
+    link: "https://buy.stripe.com/7sY4gAdg68xkgDg9r92sM02"
   },
   {
     name: "Premium",
-    price: "39,90",
+    price: "10",
     period: "mês",
     description: "Mais completo e personalizado",
     features: [
@@ -34,11 +35,12 @@ const plans = [
       "Suporte prioritário"
     ],
     icon: Crown,
-    popular: true
+    popular: true,
+    link: "https://buy.stripe.com/14AcN6eka00O3Qu5aT2sM04"
   },
   {
     name: "Elite",
-    price: "69,90",
+    price: "35",
     period: "mês",
     description: "Experiência premium completa",
     features: [
@@ -50,7 +52,8 @@ const plans = [
       "Acesso antecipado a novidades"
     ],
     icon: Zap,
-    popular: false
+    popular: false,
+    link: "https://buy.stripe.com/14AaEYeka14SgDgbzh2sM05"
   }
 ]
 
@@ -58,12 +61,12 @@ const Assinatura = () => {
   const navigate = useNavigate()
   const [selectedPlan, setSelectedPlan] = useState("")
 
-  const handleSubscribe = (planName: string, price: string) => {
+  const handleSubscribe = (planName: string, price: string, link: string) => {
     setSelectedPlan(planName)
-    // Aqui você implementará a integração com Stripe em euros
-    console.log(`Assinando plano ${planName} por €${price}`)
-    // Por enquanto, simula sucesso
-    alert(`Plano ${planName} selecionado! Em breve você será redirecionado para o pagamento.`)
+    // Abre o link do Stripe em uma nova aba
+    window.open(link, '_blank')
+    // Reset após um tempo
+    setTimeout(() => setSelectedPlan(""), 2000)
   }
 
   return (
@@ -72,7 +75,7 @@ const Assinatura = () => {
         {/* Header */}
         <div className="text-center mb-12">
           <div className="w-20 h-20 bg-primary rounded-full flex items-center justify-center mx-auto mb-6">
-            <span className="text-primary-foreground font-bold text-3xl">N</span>
+            <span className="text-primary-foreground font-bold text-3xl">VL</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
             Escolha seu Plano
@@ -124,7 +127,7 @@ const Assinatura = () => {
                   </ul>
                   
                   <Button 
-                    onClick={() => handleSubscribe(plan.name, plan.price)}
+                    onClick={() => handleSubscribe(plan.name, plan.price, plan.link)}
                     className={`w-full btn-senior ${
                       plan.popular 
                         ? 'gradient-primary text-white' 
