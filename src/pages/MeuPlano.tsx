@@ -4,6 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { useCart } from "@/hooks/useCart"
+import { useStreakTracking } from "@/hooks/useStreakTracking"
 import { 
   Calendar, 
   Clock, 
@@ -13,7 +15,8 @@ import {
   ChefHat,
   Apple,
   Coffee,
-  Utensils
+  Utensils,
+  ShoppingCart
 } from "lucide-react"
 
 const receitas = [
@@ -80,6 +83,17 @@ const getColorByType = (tipo: string) => {
 export default function MeuPlano() {
   const navigate = useNavigate()
   const [selectedDay, setSelectedDay] = useState("segunda")
+  const { addToCart } = useCart()
+  const { recordActivity } = useStreakTracking()
+
+  const handleAddToCart = (receita: any) => {
+    addToCart({
+      id: `receita-${receita.nome.toLowerCase().replace(/\s+/g, '-')}`,
+      name: receita.nome,
+      price: 2.99 // Preço exemplo para receitas
+    })
+    recordActivity() // Record activity when user interacts with meals
+  }
 
   const days = [
     { id: "segunda", name: "Segunda", date: "18/03" },
@@ -216,13 +230,22 @@ export default function MeuPlano() {
                           </ul>
                         </div>
                         
-                        <Button 
-                          variant="outline" 
-                          className="w-full"
-                          onClick={() => navigate('/receita-completa')}
-                        >
-                          Ver Receita Completa
-                        </Button>
+                        <div className="flex gap-2">
+                          <Button 
+                            variant="outline" 
+                            className="flex-1"
+                            onClick={() => navigate('/receita-completa')}
+                          >
+                            Ver Receita Completa
+                          </Button>
+                          <Button 
+                            size="sm"
+                            className="gradient-primary text-white"
+                            onClick={() => handleAddToCart(receita)}
+                          >
+                            <ShoppingCart className="h-4 w-4" />
+                          </Button>
+                        </div>
                       </CardContent>
                     </Card>
                   ))}

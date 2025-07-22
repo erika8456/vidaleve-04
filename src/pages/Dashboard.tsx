@@ -7,6 +7,8 @@ import { WeightEditDialog } from "@/components/WeightEditDialog";
 import { useNavigate } from "react-router-dom";
 import { useWeightTracking } from "@/hooks/useWeightTracking";
 import { useTodayMeals } from "@/hooks/useTodayMeals";
+import { useProfile } from "@/hooks/useProfile";
+import { useStreakTracking } from "@/hooks/useStreakTracking";
 export default function Dashboard() {
   const navigate = useNavigate();
   const {
@@ -20,6 +22,9 @@ export default function Dashboard() {
     todayMeals,
     loading: mealsLoading
   } = useTodayMeals();
+  
+  const { profile } = useProfile();
+  const { currentStreak, recordActivity } = useStreakTracking();
   const handleChatClick = () => {
     navigate('/chat');
   };
@@ -34,9 +39,14 @@ export default function Dashboard() {
       
       {/* Welcome Section */}
       <div className="gradient-primary rounded-xl p-6 text-white">
-        <h1 className="text-3xl font-bold mb-2">Olá, Ana Maria! 👋</h1>
+        <h1 className="text-3xl font-bold mb-2">
+          Olá, {profile?.full_name || 'Bem-vindo(a)'}! 👋
+        </h1>
         <p className="text-lg opacity-90">
-          Você está indo muito bem! Continue firme no seu objetivo.
+          {profile?.full_name && currentStreak > 0 
+            ? "Você está indo muito bem! Continue firme no seu objetivo." 
+            : "Bem-vindo! Complete seu perfil e comece sua jornada saudável."
+          }
         </p>
       </div>
 
@@ -70,8 +80,16 @@ export default function Dashboard() {
             <Target className="h-5 w-5 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-foreground">{progressPercentage.toFixed(0)}%</div>
-            <Progress value={progressPercentage} className="mt-2" />
+            <div className="text-3xl font-bold text-foreground">
+              {profile?.current_weight && profile?.target_weight 
+                ? progressPercentage.toFixed(0) 
+                : '0'
+              }%
+            </div>
+            <Progress 
+              value={profile?.current_weight && profile?.target_weight ? progressPercentage : 0} 
+              className="mt-2" 
+            />
           </CardContent>
         </Card>
 
@@ -103,7 +121,7 @@ export default function Dashboard() {
             <Calendar className="h-5 w-5 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-foreground">12</div>
+            <div className="text-3xl font-bold text-foreground">{currentStreak}</div>
             <p className="text-sm text-muted-foreground">
               Seguindo o plano
             </p>

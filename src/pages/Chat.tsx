@@ -168,7 +168,7 @@ export default function Chat() {
             <Bot className="h-6 w-6" />
           </div>
           <div>
-            <h2 className="text-xl font-semibold">Assistente Nutricional IA</h2>
+            <h2 className="text-xl font-semibold">Assistente 24/24</h2>
             <p className="text-sm opacity-90">Online • Sempre disponível</p>
           </div>
         </div>
