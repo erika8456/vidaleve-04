@@ -1,47 +1,40 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Progress } from "@/components/ui/progress"
-import { 
-  Activity, 
-  Target, 
-  Calendar, 
-  TrendingDown,
-  MessageCircle,
-  BookOpen,
-  Apple,
-  Clock,
-  Edit
-} from "lucide-react"
-import { TrialBanner } from "@/components/TrialBanner"
-import { WeightEditDialog } from "@/components/WeightEditDialog"
-import { useNavigate } from "react-router-dom"
-import { useWeightTracking } from "@/hooks/useWeightTracking"
-import { useTodayMeals } from "@/hooks/useTodayMeals"
-
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+import { Activity, Target, Calendar, TrendingDown, MessageCircle, BookOpen, Apple, Clock, Edit } from "lucide-react";
+import { TrialBanner } from "@/components/TrialBanner";
+import { WeightEditDialog } from "@/components/WeightEditDialog";
+import { useNavigate } from "react-router-dom";
+import { useWeightTracking } from "@/hooks/useWeightTracking";
+import { useTodayMeals } from "@/hooks/useTodayMeals";
 export default function Dashboard() {
-  const navigate = useNavigate()
-  const { currentWeight, targetWeight, initialWeight, progressPercentage, updateCurrentWeight } = useWeightTracking()
-  const { todayMeals, loading: mealsLoading } = useTodayMeals()
-
+  const navigate = useNavigate();
+  const {
+    currentWeight,
+    targetWeight,
+    initialWeight,
+    progressPercentage,
+    updateCurrentWeight
+  } = useWeightTracking();
+  const {
+    todayMeals,
+    loading: mealsLoading
+  } = useTodayMeals();
   const handleChatClick = () => {
-    navigate('/chat')
-  }
-
+    navigate('/chat');
+  };
   const handleViewPlanClick = () => {
-    navigate('/plano-refeicoes')
-  }
-
+    navigate('/plano-refeicoes');
+  };
   const handleGeneratePlanClick = () => {
-    navigate('/plano-refeicoes')
-  }
-
-  return (
-    <div className="space-y-6">
+    navigate('/plano-refeicoes');
+  };
+  return <div className="space-y-6">
       <TrialBanner />
       
       {/* Welcome Section */}
       <div className="gradient-primary rounded-xl p-6 text-white">
-        <h1 className="text-3xl font-bold mb-2">Olá, Maria! 👋</h1>
+        <h1 className="text-3xl font-bold mb-2">Olá, Ana Maria! 👋</h1>
         <p className="text-lg opacity-90">
           Você está indo muito bem! Continue firme no seu objetivo.
         </p>
@@ -56,15 +49,9 @@ export default function Dashboard() {
             </CardTitle>
             <div className="flex items-center gap-2">
               <Activity className="h-5 w-5 text-primary" />
-              <WeightEditDialog 
-                currentWeight={currentWeight}
-                onUpdateWeight={updateCurrentWeight}
-                trigger={
-                  <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
+              <WeightEditDialog currentWeight={currentWeight} onUpdateWeight={updateCurrentWeight} trigger={<Button variant="ghost" size="sm" className="h-6 w-6 p-0">
                     <Edit className="h-3 w-3" />
-                  </Button>
-                }
-              />
+                  </Button>} />
             </div>
           </CardHeader>
           <CardContent>
@@ -95,15 +82,9 @@ export default function Dashboard() {
             </CardTitle>
             <div className="flex items-center gap-2">
               <TrendingDown className="h-5 w-5 text-primary" />
-              <WeightEditDialog 
-                currentWeight={currentWeight}
-                onUpdateWeight={updateCurrentWeight}
-                trigger={
-                  <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
+              <WeightEditDialog currentWeight={currentWeight} onUpdateWeight={updateCurrentWeight} trigger={<Button variant="ghost" size="sm" className="h-6 w-6 p-0">
                     <Edit className="h-3 w-3" />
-                  </Button>
-                }
-              />
+                  </Button>} />
             </div>
           </CardHeader>
           <CardContent>
@@ -181,61 +162,28 @@ export default function Dashboard() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          {mealsLoading ? (
-            <div className="text-center py-4">
+          {mealsLoading ? <div className="text-center py-4">
               <p className="text-muted-foreground">Carregando refeições...</p>
-            </div>
-          ) : todayMeals.length > 0 ? (
-            <div className="space-y-4">
-              {todayMeals.map((meal, index) => (
-                <div 
-                  key={meal.meal.id}
-                  className={`flex items-center justify-between p-4 rounded-lg ${
-                    meal.isCompleted 
-                      ? 'bg-accent border-l-4 border-l-primary' 
-                      : index === 0 && !meal.isCompleted
-                        ? 'bg-orange-50 border-l-4 border-l-orange-500'
-                        : 'bg-muted'
-                  } ${!meal.isCompleted && index > 0 ? 'opacity-60' : ''}`}
-                >
+            </div> : todayMeals.length > 0 ? <div className="space-y-4">
+              {todayMeals.map((meal, index) => <div key={meal.meal.id} className={`flex items-center justify-between p-4 rounded-lg ${meal.isCompleted ? 'bg-accent border-l-4 border-l-primary' : index === 0 && !meal.isCompleted ? 'bg-orange-50 border-l-4 border-l-orange-500' : 'bg-muted'} ${!meal.isCompleted && index > 0 ? 'opacity-60' : ''}`}>
                   <div>
                     <h4 className="font-semibold">{meal.typeLabel}</h4>
                     <p className="text-sm text-muted-foreground">{meal.meal.name}</p>
                   </div>
                   <div className="text-right">
-                    <p className={`font-semibold ${
-                      meal.isCompleted 
-                        ? 'text-primary' 
-                        : index === 0 && !meal.isCompleted
-                          ? 'text-orange-600'
-                          : 'text-muted-foreground'
-                    }`}>
-                      {meal.isCompleted 
-                        ? '✓ Concluído' 
-                        : index === 0 && !meal.isCompleted
-                          ? '⏰ Próximo'
-                          : 'Pendente'
-                      }
+                    <p className={`font-semibold ${meal.isCompleted ? 'text-primary' : index === 0 && !meal.isCompleted ? 'text-orange-600' : 'text-muted-foreground'}`}>
+                      {meal.isCompleted ? '✓ Concluído' : index === 0 && !meal.isCompleted ? '⏰ Próximo' : 'Pendente'}
                     </p>
                     <p className="text-sm text-muted-foreground">{meal.calories} kcal</p>
                   </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-8">
+                </div>)}
+            </div> : <div className="text-center py-8">
               <p className="text-muted-foreground mb-2">Nenhuma refeição planejada para hoje</p>
-              <Button 
-                variant="outline" 
-                onClick={handleGeneratePlanClick}
-                className="mt-2"
-              >
+              <Button variant="outline" onClick={handleGeneratePlanClick} className="mt-2">
                 Gerar Plano de Hoje
               </Button>
-            </div>
-          )}
+            </div>}
         </CardContent>
       </Card>
-    </div>
-  )
+    </div>;
 }
