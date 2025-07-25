@@ -10,7 +10,7 @@ interface Meal {
   id: string
   name: string
   description: string
-  ingredients: string[]
+  ingredients: string | null
   instructions: string
   calories: number
 }
@@ -235,11 +235,13 @@ export default function MealPlan() {
         <div className="space-y-3">
           <div>
             <h5 className="font-medium text-sm mb-1">Ingredientes:</h5>
-            <ul className="text-sm text-muted-foreground list-disc list-inside">
-              {meal.ingredients.map((ingredient, index) => (
-                <li key={index}>{ingredient}</li>
-              ))}
-            </ul>
+            <div className="text-sm text-muted-foreground">
+              {meal.ingredients ? (
+                <p>{meal.ingredients}</p>
+              ) : (
+                <p>Ingredientes não informados</p>
+              )}
+            </div>
           </div>
 
           <div>
