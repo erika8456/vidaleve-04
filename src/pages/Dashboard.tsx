@@ -43,12 +43,18 @@ export default function Dashboard() {
       })
 
       if (error) {
+        console.error('Generate plan error:', error)
         toast.error('Erro ao gerar plano de refeições')
         return
       }
 
+      console.log('Plan generated:', data)
       toast.success('Novo plano gerado com sucesso!')
-      navigate('/plano-refeicoes');
+      
+      // Refresh the meals data
+      setTimeout(() => {
+        window.location.reload()
+      }, 1000)
     } catch (error) {
       console.error('Erro:', error)
       toast.error('Erro ao gerar plano')

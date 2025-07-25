@@ -44,6 +44,30 @@ export type Database = {
         }
         Relationships: []
       }
+      chat_messages: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_ai: boolean | null
+          message: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_ai?: boolean | null
+          message: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_ai?: boolean | null
+          message?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       daily_meal_plans: {
         Row: {
           breakfast_meal_id: string | null
@@ -183,8 +207,11 @@ export type Database = {
           fat: number | null
           id: string
           image_url: string | null
+          ingredients: string | null
+          instructions: string | null
           name: string
           protein: number | null
+          type: string
         }
         Insert: {
           calories?: number | null
@@ -194,8 +221,11 @@ export type Database = {
           fat?: number | null
           id?: string
           image_url?: string | null
+          ingredients?: string | null
+          instructions?: string | null
           name: string
           protein?: number | null
+          type?: string
         }
         Update: {
           calories?: number | null
@@ -205,8 +235,11 @@ export type Database = {
           fat?: number | null
           id?: string
           image_url?: string | null
+          ingredients?: string | null
+          instructions?: string | null
           name?: string
           protein?: number | null
+          type?: string
         }
         Relationships: []
       }
