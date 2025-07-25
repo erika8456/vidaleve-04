@@ -85,10 +85,18 @@ serve(async (req) => {
       .from('meals')
       .select('*');
 
-    if (mealsError || !meals) {
+    if (mealsError) {
       console.error('Error fetching meals:', mealsError);
-      return new Response(JSON.stringify({ error: 'Erro ao buscar refeições' }), {
+      return new Response(JSON.stringify({ error: 'Erro ao buscar refeições', details: mealsError.message }), {
         status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    if (!meals || meals.length === 0) {
+      console.error('No meals found in database');
+      return new Response(JSON.stringify({ error: 'Nenhuma refeição encontrada no banco de dados' }), {
+        status: 404,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
