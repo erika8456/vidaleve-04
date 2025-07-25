@@ -11,6 +11,7 @@ import ReceitaCompleta from "./pages/ReceitaCompleta";
 import MeuPlano from "./pages/MeuPlano";
 import MealPlan from "./components/MealPlan";
 import Perfil from "./pages/Perfil";
+import Configuracoes from "./pages/Configuracoes";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Cadastro from "./pages/Cadastro";
@@ -71,11 +72,7 @@ const App = () => (
                 <Cadastro />
               </PublicRoute>
             } />
-            <Route path="/assinatura" element={
-              <PublicRoute>
-                <Assinatura />
-              </PublicRoute>
-            } />
+            <Route path="/assinatura" element={<Assinatura />} />
             <Route path="/banco-imagens" element={
               <ProtectedRoute>
                 <Layout><ImageBank /></Layout>
@@ -113,7 +110,7 @@ const App = () => (
             } />
             <Route path="/configuracoes" element={
               <ProtectedRoute>
-                <Layout><div className="p-6"><h1 className="text-2xl">Configurações em desenvolvimento</h1></div></Layout>
+                <Layout><Configuracoes /></Layout>
               </ProtectedRoute>
             } />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

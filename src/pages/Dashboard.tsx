@@ -9,6 +9,8 @@ import { useWeightTracking } from "@/hooks/useWeightTracking";
 import { useTodayMeals } from "@/hooks/useTodayMeals";
 import { useProfile } from "@/hooks/useProfile";
 import { useStreakTracking } from "@/hooks/useStreakTracking";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 export default function Dashboard() {
   const navigate = useNavigate();
   const {
@@ -31,8 +33,26 @@ export default function Dashboard() {
   const handleViewPlanClick = () => {
     navigate('/plano-refeicoes');
   };
-  const handleGeneratePlanClick = () => {
-    navigate('/plano-refeicoes');
+  const handleGeneratePlanClick = async () => {
+    try {
+      const { data, error } = await supabase.functions.invoke('generate-meal-plan', {
+        body: { 
+          date: new Date().toISOString().split('T')[0],
+          regenerate: true
+        }
+      })
+
+      if (error) {
+        toast.error('Erro ao gerar plano de refeições')
+        return
+      }
+
+      toast.success('Novo plano gerado com sucesso!')
+      navigate('/plano-refeicoes');
+    } catch (error) {
+      console.error('Erro:', error)
+      toast.error('Erro ao gerar plano')
+    }
   };
   return <div className="space-y-6">
       <TrialBanner />

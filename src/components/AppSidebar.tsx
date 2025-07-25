@@ -3,6 +3,7 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Home, MessageCircle, BookOpen, User, Settings, Menu, X, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarHeader, useSidebar } from "@/components/ui/sidebar";
+import { supabase } from "@/integrations/supabase/client";
 const menuItems = [{
   title: "Dashboard",
   url: "/dashboard",
@@ -31,9 +32,17 @@ export function AppSidebar() {
   const location = useLocation();
   const navigate = useNavigate();
   const currentPath = location.pathname;
-  const handleLogout = () => {
-    // Aqui você pode adicionar lógica de logout quando integrar autenticação
-    navigate('/');
+  const handleLogout = async () => {
+    try {
+      const { error } = await supabase.auth.signOut()
+      if (error) {
+        console.error('Erro ao fazer logout:', error)
+        return
+      }
+      navigate('/')
+    } catch (error) {
+      console.error('Erro no logout:', error)
+    }
   };
   const isActive = (path: string) => currentPath === path;
   const getNavClass = ({
