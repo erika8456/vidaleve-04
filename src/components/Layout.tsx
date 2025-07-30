@@ -3,6 +3,7 @@ import { AppSidebar } from "@/components/AppSidebar"
 import { Bell, Menu } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { NotificationDropdown } from "@/components/NotificationDropdown"
+import { ThemeToggle } from "@/components/ThemeToggle"
 
 interface LayoutProps {
   children: React.ReactNode
@@ -27,6 +28,7 @@ export function Layout({ children }: LayoutProps) {
             </div>
             
             <div className="flex items-center gap-3">
+              <ThemeToggle />
               <NotificationDropdown />
               <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
                 <span className="text-primary-foreground font-medium text-sm">U</span>
