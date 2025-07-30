@@ -34,14 +34,16 @@ export function AppSidebar() {
   const currentPath = location.pathname;
   const handleLogout = async () => {
     try {
-      const { error } = await supabase.auth.signOut()
+      const {
+        error
+      } = await supabase.auth.signOut();
       if (error) {
-        console.error('Erro ao fazer logout:', error)
-        return
+        console.error('Erro ao fazer logout:', error);
+        return;
       }
-      navigate('/')
+      navigate('/');
     } catch (error) {
-      console.error('Erro no logout:', error)
+      console.error('Erro no logout:', error);
     }
   };
   const isActive = (path: string) => currentPath === path;
@@ -57,8 +59,8 @@ export function AppSidebar() {
             <span className="text-primary-foreground font-bold text-lg">V</span>
           </div>
           {state !== "collapsed" && <div>
-              <h2 className="text-xl font-bold text-primary">Vida Leve</h2>
-              <p className="text-sm text-muted-foreground">Nutrição Inteligente 35+</p>
+              
+              
             </div>}
         </div>
       </SidebarHeader>
