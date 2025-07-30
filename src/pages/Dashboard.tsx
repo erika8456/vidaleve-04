@@ -156,7 +156,7 @@ export default function Dashboard() {
       </div>
 
       {/* Quick Actions */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <Card className="card-senior hover:shadow-[var(--shadow-medium)] transition-shadow cursor-pointer">
           <CardContent className="p-6 text-center">
             <MessageCircle className="h-12 w-12 text-primary mx-auto mb-4" />
@@ -192,6 +192,19 @@ export default function Dashboard() {
             </p>
             <Button className="btn-senior w-full gradient-primary text-white" onClick={handleGeneratePlanClick}>
               Gerar Plano
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card className="card-senior hover:shadow-[var(--shadow-medium)] transition-shadow cursor-pointer">
+          <CardContent className="p-6 text-center">
+            <Target className="h-12 w-12 text-primary mx-auto mb-4" />
+            <h3 className="text-xl font-semibold mb-2">Assinatura</h3>
+            <p className="text-muted-foreground mb-4">
+              Gerencie sua assinatura e benefícios
+            </p>
+            <Button className="btn-senior w-full" variant="outline" onClick={() => navigate('/assinatura')}>
+              Ver Assinatura
             </Button>
           </CardContent>
         </Card>

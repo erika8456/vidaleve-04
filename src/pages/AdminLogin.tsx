@@ -17,7 +17,7 @@ export default function AdminLogin() {
     setLoading(true)
 
     // Credenciais de admin fixas para demonstração
-    if (email === 'admin@vidaleve.com' && password === 'admin123') {
+    if (email === 'chacalabuata@gmail.com' && password === '12345678') {
       localStorage.setItem('adminLoggedIn', 'true')
       toast.success('Login de administrador realizado com sucesso!')
       navigate('/admin/dashboard')
