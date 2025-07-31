@@ -130,6 +130,69 @@ export type Database = {
           },
         ]
       }
+      exercise_reminders: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean | null
+          reminder_time: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          reminder_time?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          reminder_time?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      exercises: {
+        Row: {
+          created_at: string
+          day_of_week: number | null
+          description: string | null
+          difficulty_level: string | null
+          duration_minutes: number | null
+          id: string
+          image_url: string | null
+          instructions: string | null
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          day_of_week?: number | null
+          description?: string | null
+          difficulty_level?: string | null
+          duration_minutes?: number | null
+          id?: string
+          image_url?: string | null
+          instructions?: string | null
+          name: string
+        }
+        Update: {
+          created_at?: string
+          day_of_week?: number | null
+          description?: string | null
+          difficulty_level?: string | null
+          duration_minutes?: number | null
+          id?: string
+          image_url?: string | null
+          instructions?: string | null
+          name?: string
+        }
+        Relationships: []
+      }
       image_bank: {
         Row: {
           created_at: string | null

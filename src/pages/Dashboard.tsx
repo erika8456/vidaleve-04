@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { Activity, Target, Calendar, TrendingDown, MessageCircle, BookOpen, Apple, Clock, Edit } from "lucide-react";
+import { Activity, Target, Calendar, TrendingDown, MessageCircle, BookOpen, Apple, Clock, Edit, Trophy } from "lucide-react";
 import { TrialBanner } from "@/components/TrialBanner";
 import { WeightEditDialog } from "@/components/WeightEditDialog";
 import { useNavigate } from "react-router-dom";
@@ -11,6 +11,8 @@ import { useProfile } from "@/hooks/useProfile";
 import { useStreakTracking } from "@/hooks/useStreakTracking";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { useTrialNotifications } from "@/hooks/useTrialNotifications";
+import { useExerciseReminders } from "@/hooks/useExerciseReminders";
 export default function Dashboard() {
   const navigate = useNavigate();
   const {
@@ -27,11 +29,19 @@ export default function Dashboard() {
   
   const { profile } = useProfile();
   const { currentStreak, recordActivity } = useStreakTracking();
+  const { hasAccess } = useTrialNotifications();
+  
+  // Initialize exercise reminders
+  useExerciseReminders();
   const handleChatClick = () => {
     navigate('/chat');
   };
   const handleViewPlanClick = () => {
     navigate('/plano-refeicoes');
+  };
+
+  const handleExerciseClick = () => {
+    navigate('/exercicios');
   };
   const handleGeneratePlanClick = async () => {
     try {
@@ -60,6 +70,27 @@ export default function Dashboard() {
       toast.error('Erro ao gerar plano')
     }
   };
+
+  if (!hasAccess) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <Card className="max-w-md mx-auto text-center">
+          <CardHeader>
+            <CardTitle className="text-red-600">Acesso Expirado</CardTitle>
+            <p className="text-muted-foreground">
+              Seu período de teste expirou. Assine um plano para continuar usando o app.
+            </p>
+          </CardHeader>
+          <CardContent>
+            <Button onClick={() => navigate('/assinatura')}>
+              Assinar Agora
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
+
   return <div className="space-y-6">
       <TrialBanner />
       
@@ -156,7 +187,7 @@ export default function Dashboard() {
       </div>
 
       {/* Quick Actions */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
         <Card className="card-senior hover:shadow-[var(--shadow-medium)] transition-shadow cursor-pointer">
           <CardContent className="p-6 text-center">
             <MessageCircle className="h-12 w-12 text-primary mx-auto mb-4" />
@@ -179,6 +210,19 @@ export default function Dashboard() {
             </p>
             <Button className="btn-senior w-full" variant="outline" onClick={handleViewPlanClick}>
               Ver Plano
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card className="card-senior hover:shadow-[var(--shadow-medium)] transition-shadow cursor-pointer">
+          <CardContent className="p-6 text-center">
+            <Trophy className="h-12 w-12 text-primary mx-auto mb-4" />
+            <h3 className="text-xl font-semibold mb-2">Exercícios</h3>
+            <p className="text-muted-foreground mb-4">
+              Veja seus exercícios diários e mantenha-se ativo
+            </p>
+            <Button className="btn-senior w-full" variant="outline" onClick={handleExerciseClick}>
+              Ver Exercícios
             </Button>
           </CardContent>
         </Card>

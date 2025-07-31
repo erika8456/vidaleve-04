@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { Home, MessageCircle, BookOpen, User, Settings, Menu, X, LogOut } from "lucide-react";
+import { Home, MessageCircle, BookOpen, User, Settings, Menu, X, LogOut, Trophy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarHeader, useSidebar } from "@/components/ui/sidebar";
 import { supabase } from "@/integrations/supabase/client";
@@ -16,6 +16,10 @@ const menuItems = [{
   title: "Meu Plano",
   url: "/meu-plano",
   icon: BookOpen
+}, {
+  title: "Exercícios",
+  url: "/exercicios",
+  icon: Trophy
 }, {
   title: "Perfil",
   url: "/perfil",

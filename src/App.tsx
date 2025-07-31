@@ -9,6 +9,7 @@ import Dashboard from "./pages/Dashboard";
 import Chat from "./pages/Chat";
 import ReceitaCompleta from "./pages/ReceitaCompleta";
 import MeuPlano from "./pages/MeuPlano";
+import Exercicios from "./pages/Exercicios";
 import MealPlan from "./components/MealPlan";
 import Perfil from "./pages/Perfil";
 import Configuracoes from "./pages/Configuracoes";
@@ -93,6 +94,11 @@ const App = () => (
             <Route path="/meu-plano" element={
               <ProtectedRoute>
                 <Layout><MeuPlano /></Layout>
+              </ProtectedRoute>
+            } />
+            <Route path="/exercicios" element={
+              <ProtectedRoute>
+                <Layout><Exercicios /></Layout>
               </ProtectedRoute>
             } />
             <Route path="/receita-completa" element={
