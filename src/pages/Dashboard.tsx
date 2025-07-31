@@ -13,6 +13,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useTrialNotifications } from "@/hooks/useTrialNotifications";
 import { useExerciseReminders } from "@/hooks/useExerciseReminders";
+import { useSubscription } from '@/hooks/useSubscription';
+import { PlanRestrictionBanner } from '@/components/PlanRestrictionBanner';
 export default function Dashboard() {
   const navigate = useNavigate();
   const {
@@ -29,7 +31,8 @@ export default function Dashboard() {
   
   const { profile } = useProfile();
   const { currentStreak, recordActivity } = useStreakTracking();
-  const { hasAccess } = useTrialNotifications();
+  const { hasAccess: hasTrialAccess } = useTrialNotifications();
+  const { subscription_tier, hasAccess, loading: subscriptionLoading } = useSubscription();
   
   // Initialize exercise reminders
   useExerciseReminders();
@@ -71,7 +74,7 @@ export default function Dashboard() {
     }
   };
 
-  if (!hasAccess) {
+  if (!hasTrialAccess) {
     return (
       <div className="container mx-auto px-4 py-8">
         <Card className="max-w-md mx-auto text-center">
@@ -87,6 +90,14 @@ export default function Dashboard() {
             </Button>
           </CardContent>
         </Card>
+      </div>
+    )
+  }
+
+  if (subscriptionLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
       </div>
     )
   }
@@ -188,53 +199,83 @@ export default function Dashboard() {
 
       {/* Quick Actions */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-        <Card className="card-senior hover:shadow-[var(--shadow-medium)] transition-shadow cursor-pointer">
+        <Card className={`card-senior hover:shadow-[var(--shadow-medium)] transition-shadow ${hasAccess('chat') ? 'cursor-pointer' : 'opacity-50 cursor-not-allowed'}`}>
           <CardContent className="p-6 text-center">
             <MessageCircle className="h-12 w-12 text-primary mx-auto mb-4" />
             <h3 className="text-xl font-semibold mb-2">Chat com IA</h3>
             <p className="text-muted-foreground mb-4">
               Tire suas dúvidas e receba dicas personalizadas
             </p>
-            <Button className="btn-senior w-full" onClick={handleChatClick}>
+            {!hasAccess('chat') && (
+              <p className="text-xs text-red-500 mb-2">Plano Elite necessário</p>
+            )}
+            <Button 
+              className="btn-senior w-full" 
+              onClick={hasAccess('chat') ? handleChatClick : undefined}
+              disabled={!hasAccess('chat')}
+            >
               Conversar Agora
             </Button>
           </CardContent>
         </Card>
 
-        <Card className="card-senior hover:shadow-[var(--shadow-medium)] transition-shadow cursor-pointer">
+        <Card className={`card-senior hover:shadow-[var(--shadow-medium)] transition-shadow ${hasAccess('meal-plan') ? 'cursor-pointer' : 'opacity-50 cursor-not-allowed'}`}>
           <CardContent className="p-6 text-center">
             <BookOpen className="h-12 w-12 text-primary mx-auto mb-4" />
             <h3 className="text-xl font-semibold mb-2">Meu Plano</h3>
             <p className="text-muted-foreground mb-4">
               Veja suas refeições e receitas da semana
             </p>
-            <Button className="btn-senior w-full" variant="outline" onClick={handleViewPlanClick}>
+            {!hasAccess('meal-plan') && (
+              <p className="text-xs text-red-500 mb-2">Plano Basic+ necessário</p>
+            )}
+            <Button 
+              className="btn-senior w-full" 
+              variant="outline" 
+              onClick={hasAccess('meal-plan') ? handleViewPlanClick : undefined}
+              disabled={!hasAccess('meal-plan')}
+            >
               Ver Plano
             </Button>
           </CardContent>
         </Card>
 
-        <Card className="card-senior hover:shadow-[var(--shadow-medium)] transition-shadow cursor-pointer">
+        <Card className={`card-senior hover:shadow-[var(--shadow-medium)] transition-shadow ${hasAccess('exercises') ? 'cursor-pointer' : 'opacity-50 cursor-not-allowed'}`}>
           <CardContent className="p-6 text-center">
             <Trophy className="h-12 w-12 text-primary mx-auto mb-4" />
             <h3 className="text-xl font-semibold mb-2">Exercícios</h3>
             <p className="text-muted-foreground mb-4">
               Veja seus exercícios diários e mantenha-se ativo
             </p>
-            <Button className="btn-senior w-full" variant="outline" onClick={handleExerciseClick}>
+            {!hasAccess('exercises') && (
+              <p className="text-xs text-red-500 mb-2">Plano Elite necessário</p>
+            )}
+            <Button 
+              className="btn-senior w-full" 
+              variant="outline" 
+              onClick={hasAccess('exercises') ? handleExerciseClick : undefined}
+              disabled={!hasAccess('exercises')}
+            >
               Ver Exercícios
             </Button>
           </CardContent>
         </Card>
 
-        <Card className="card-senior hover:shadow-[var(--shadow-medium)] transition-shadow cursor-pointer">
+        <Card className={`card-senior hover:shadow-[var(--shadow-medium)] transition-shadow ${hasAccess('generate-plan') ? 'cursor-pointer' : 'opacity-50 cursor-not-allowed'}`}>
           <CardContent className="p-6 text-center">
             <Apple className="h-12 w-12 text-primary mx-auto mb-4" />
             <h3 className="text-xl font-semibold mb-2">Gerar Novo Plano</h3>
             <p className="text-muted-foreground mb-4">
               Crie um novo plano alimentar personalizado
             </p>
-            <Button className="btn-senior w-full gradient-primary text-white" onClick={handleGeneratePlanClick}>
+            {!hasAccess('generate-plan') && (
+              <p className="text-xs text-red-500 mb-2">Plano Elite necessário</p>
+            )}
+            <Button 
+              className="btn-senior w-full gradient-primary text-white" 
+              onClick={hasAccess('generate-plan') ? handleGeneratePlanClick : undefined}
+              disabled={!hasAccess('generate-plan')}
+            >
               Gerar Plano
             </Button>
           </CardContent>

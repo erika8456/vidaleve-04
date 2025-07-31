@@ -2,10 +2,12 @@ import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import { Send, Bot, User, AlertCircle, Clock, Crown } from "lucide-react";
+import { Send, Bot, User, AlertCircle, Clock, Crown, MessageCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { useSubscription } from '@/hooks/useSubscription';
+import { PlanRestrictionBanner } from '@/components/PlanRestrictionBanner';
 interface Message {
   id: string;
   content: string;
@@ -14,6 +16,7 @@ interface Message {
 }
 export default function Chat() {
   const navigate = useNavigate();
+  const { hasAccess, subscription_tier } = useSubscription();
   const [messages, setMessages] = useState<Message[]>([{
     id: '1',
     content: 'Olá! Sou sua assistente nutricional especializada em pessoas com mais de 50 anos. Como posso ajudá-lo(a) hoje? 😊\n\nPosso te ajudar com:\n• Planos alimentares personalizados\n• Receitas saudáveis\n• Dicas de nutrição\n• Exercícios adequados\n• Acompanhamento do seu progresso',
@@ -125,6 +128,27 @@ export default function Chat() {
   const handleQuickSuggestion = (suggestion: string) => {
     setNewMessage(suggestion);
   };
+  if (!hasAccess('chat')) {
+    return (
+      <div className="container mx-auto p-6 max-w-4xl">
+        <PlanRestrictionBanner 
+          currentPlan={subscription_tier}
+          requiredPlan="Elite"
+          featureName="Chat com IA"
+        />
+        <Card className="h-[600px] flex flex-col opacity-50">
+          <div className="flex-1 flex items-center justify-center">
+            <div className="text-center">
+              <MessageCircle className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
+              <h3 className="text-lg font-semibold mb-2">Chat Premium</h3>
+              <p className="text-muted-foreground">Faça upgrade para acessar conversas ilimitadas com nossa IA</p>
+            </div>
+          </div>
+        </Card>
+      </div>
+    )
+  }
+
   return <div className="max-w-4xl mx-auto h-[calc(100vh-8rem)] flex flex-col">
       {/* Trial Status */}
       {trialStatus && !trialStatus.subscription_active && <Card className={`p-4 mb-4 ${trialStatus.trial_expired ? 'bg-destructive/10 border-destructive' : 'bg-warning/10 border-warning'}`}>
