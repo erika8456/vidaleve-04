@@ -49,10 +49,10 @@ const Assinatura = () => {
           <div className="w-20 h-20 bg-primary rounded-full flex items-center justify-center mx-auto mb-6">
             <span className="text-primary-foreground font-bold text-3xl">VL</span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-slate-50">
             Escolha seu Plano
           </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-xl max-w-2xl mx-auto text-slate-50">
             Selecione o plano ideal para sua jornada de emagrecimento saudável
           </p>
         </div>
@@ -96,7 +96,7 @@ const Assinatura = () => {
         </div>
 
         {/* Guarantee Section */}
-        <Card className="card-senior bg-muted/50 text-center">
+        <Card className="card-senior text-center bg-zinc-100">
           <CardContent className="pt-6">
             <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
               <Check className="h-8 w-8 text-primary" />
