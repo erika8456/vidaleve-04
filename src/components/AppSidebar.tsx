@@ -80,7 +80,7 @@ export function AppSidebar() {
                   <SidebarMenuButton asChild className="h-12">
                     <NavLink to={item.url} className={getNavClass}>
                       <item.icon className="h-6 w-6 flex-shrink-0" />
-                      {state !== "collapsed" && <span className="text-lg font-medium">{item.title}</span>}
+                      {state !== "collapsed" && <span className="text-lg font-medium text-slate-100">{item.title}</span>}
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>)}
