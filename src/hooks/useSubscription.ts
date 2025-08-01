@@ -86,14 +86,21 @@ export function useSubscription() {
       return true
     }
     
+    if (subscription.subscription_tier === 'premium') {
+      // Premium plan features
+      const premiumFeatures = ['chat', 'meal-plan', 'weight-tracking', 'exercises', 'premium-recipes', 'advanced-analytics']
+      return premiumFeatures.includes(feature)
+    }
+    
     if (subscription.subscription_tier === 'basic') {
       // Basic plan restrictions
       const basicFeatures = ['chat', 'meal-plan', 'weight-tracking']
       return basicFeatures.includes(feature)
     }
     
-    // Trial users have limited access
-    return feature === 'chat'
+    // Trial users have very limited access
+    const trialFeatures = ['chat', 'basic-meal-plan']
+    return trialFeatures.includes(feature)
   }
 
   return {

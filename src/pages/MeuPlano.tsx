@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useCart } from "@/hooks/useCart"
 import { useStreakTracking } from "@/hooks/useStreakTracking"
+import { useSubscription } from "@/hooks/useSubscription"
 import { 
   Calendar, 
   Clock, 
@@ -19,40 +20,103 @@ import {
   ShoppingCart
 } from "lucide-react"
 
-const receitas = [
-  {
-    nome: "Omelete de Espinafre",
-    tipo: "Café da Manhã",
-    ingredientes: ["2 ovos", "1 xícara de espinafre", "1 fatia de queijo branco", "1 colher de azeite"],
-    modo_preparo: "Bata os ovos, refogue o espinafre e faça a omelete. Adicione o queijo e sirva quente.",
-    calorias: 280,
-    tempo: "15 min"
-  },
-  {
-    nome: "Salmão Grelhado com Quinoa",
-    tipo: "Almoço",
-    ingredientes: ["150g de salmão", "1/2 xícara de quinoa", "Brócolis", "Cenoura", "Azeite"],
-    modo_preparo: "Grelhe o salmão, cozinhe a quinoa e refogue os legumes. Tempere com azeite e ervas.",
-    calorias: 520,
-    tempo: "25 min"
-  },
-  {
-    nome: "Sopa de Legumes com Frango",
-    tipo: "Jantar",
-    ingredientes: ["100g de peito de frango", "Abobrinha", "Cenoura", "Batata doce", "Caldo de legumes"],
-    modo_preparo: "Cozinhe todos os ingredientes no caldo até ficarem macios. Tempere a gosto.",
-    calorias: 310,
-    tempo: "30 min"
-  },
-  {
-    nome: "Smoothie Verde",
-    tipo: "Lanche",
-    ingredientes: ["1 banana", "1 xícara de espinafre", "1 maçã", "Água de coco", "Chia"],
-    modo_preparo: "Bata todos os ingredientes no liquidificador até obter consistência cremosa.",
-    calorias: 180,
-    tempo: "5 min"
-  }
-]
+const getReceitasByPlan = (tier: string) => {
+  const basicReceitas = [
+    {
+      nome: "Omelete Simples",
+      tipo: "Café da Manhã",
+      ingredientes: ["2 ovos", "Sal", "Pimenta"],
+      modo_preparo: "Bata os ovos e faça a omelete básica.",
+      calorias: 200,
+      tempo: "10 min",
+      plan: "basic"
+    },
+    {
+      nome: "Frango Grelhado",
+      tipo: "Almoço",
+      ingredientes: ["150g de peito de frango", "Temperos básicos"],
+      modo_preparo: "Grelhe o frango com temperos.",
+      calorias: 300,
+      tempo: "20 min",
+      plan: "basic"
+    }
+  ]
+
+  const premiumReceitas = [
+    ...basicReceitas,
+    {
+      nome: "Omelete de Espinafre Gourmet",
+      tipo: "Café da Manhã",
+      ingredientes: ["2 ovos orgânicos", "1 xícara de espinafre baby", "Queijo de cabra", "Azeite extravirgem", "Ervas finas"],
+      modo_preparo: "Refogue o espinafre com azeite, bata os ovos com ervas e faça omelete cremosa. Finalize com queijo de cabra.",
+      calorias: 320,
+      tempo: "15 min",
+      plan: "premium"
+    },
+    {
+      nome: "Salmão Grelhado com Quinoa",
+      tipo: "Almoço",
+      ingredientes: ["150g de salmão selvagem", "1/2 xícara de quinoa tricolor", "Aspargos", "Tomate cereja", "Molho de limão siciliano"],
+      modo_preparo: "Grelhe o salmão, prepare quinoa fluffy e refogue legumes. Finalize com molho cítrico.",
+      calorias: 520,
+      tempo: "25 min",
+      plan: "premium"
+    },
+    {
+      nome: "Bowl Mediterrâneo",
+      tipo: "Jantar",
+      ingredientes: ["Quinoa", "Grão de bico", "Pepino", "Tomate", "Azeitonas", "Feta", "Azeite"],
+      modo_preparo: "Monte bowl colorido com todos ingredientes frescos.",
+      calorias: 380,
+      tempo: "15 min",
+      plan: "premium"
+    },
+    {
+      nome: "Smoothie Superfoods",
+      tipo: "Lanche",
+      ingredientes: ["Açaí", "Banana", "Spirulina", "Chia", "Leite de coco", "Mel"],
+      modo_preparo: "Bata todos ingredientes para smoothie nutritivo.",
+      calorias: 250,
+      tempo: "5 min",
+      plan: "premium"
+    }
+  ]
+
+  const eliteReceitas = [
+    ...premiumReceitas,
+    {
+      nome: "Tartare de Atum com Abacate",
+      tipo: "Café da Manhã",
+      ingredientes: ["Atum sashimi", "Abacate", "Gengibre", "Wasabi", "Gergelim preto", "Molho ponzu"],
+      modo_preparo: "Corte atum em cubos, misture com temperos orientais e sirva sobre abacate.",
+      calorias: 380,
+      tempo: "20 min",
+      plan: "elite"
+    },
+    {
+      nome: "Lagosta Grelhada com Risotto",
+      tipo: "Almoço",
+      ingredientes: ["Cauda de lagosta", "Arroz arbóreo", "Vinho branco", "Parmesão", "Açafrão", "Manteiga"],
+      modo_preparo: "Prepare risotto cremoso e grelhe lagosta com perfeição.",
+      calorias: 650,
+      tempo: "45 min",
+      plan: "elite"
+    },
+    {
+      nome: "Filé Mignon ao Molho Trufado",
+      tipo: "Jantar",
+      ingredientes: ["Filé mignon", "Trufa negra", "Vinho tinto", "Cogumelos", "Manteiga", "Ervas"],
+      modo_preparo: "Grelhe filé ao ponto e prepare molho sofisticado com trufa.",
+      calorias: 550,
+      tempo: "35 min",
+      plan: "elite"
+    }
+  ]
+
+  if (tier === 'elite') return eliteReceitas
+  if (tier === 'premium') return premiumReceitas
+  return basicReceitas
+}
 
 const getIconByType = (tipo: string) => {
   switch (tipo) {
@@ -85,15 +149,31 @@ export default function MeuPlano() {
   const [selectedDay, setSelectedDay] = useState("segunda")
   const { addToCart } = useCart()
   const { recordActivity } = useStreakTracking()
+  const { hasAccess, subscription_tier } = useSubscription()
 
   const handleAddToCart = (receita: any) => {
+    if (!hasAccess('premium-recipes') && receita.plan !== 'basic') {
+      alert('Esta receita está disponível apenas para assinantes Premium ou Elite!')
+      return
+    }
+    
     addToCart({
       id: `receita-${receita.nome.toLowerCase().replace(/\s+/g, '-')}`,
       name: receita.nome,
-      price: 2.99 // Preço exemplo para receitas
+      price: receita.plan === 'elite' ? 9.99 : receita.plan === 'premium' ? 4.99 : 2.99
     })
-    recordActivity() // Record activity when user interacts with meals
+    recordActivity()
   }
+
+  const handleViewRecipe = (receita: any) => {
+    if (!hasAccess('premium-recipes') && receita.plan !== 'basic') {
+      alert('Esta receita está disponível apenas para assinantes Premium ou Elite!')
+      return
+    }
+    navigate('/receita-completa')
+  }
+
+  const receitas = getReceitasByPlan(subscription_tier)
 
   const days = [
     { id: "segunda", name: "Segunda", date: "18/03" },
@@ -194,16 +274,24 @@ export default function MeuPlano() {
               <TabsContent key={day.id} value={day.id} className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {receitas.map((receita, index) => (
-                    <Card key={index} className="border border-border hover:shadow-[var(--shadow-medium)] transition-shadow">
+                    <Card key={index} className={`border border-border hover:shadow-[var(--shadow-medium)] transition-shadow ${receita.plan === 'elite' ? 'border-yellow-400 bg-gradient-to-br from-yellow-50 to-orange-50' : receita.plan === 'premium' ? 'border-purple-400 bg-gradient-to-br from-purple-50 to-pink-50' : ''}`}>
                       <CardHeader>
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
                             {getIconByType(receita.tipo)}
                             <CardTitle className="text-lg">{receita.nome}</CardTitle>
                           </div>
-                          <Badge className={getColorByType(receita.tipo)}>
-                            {receita.tipo}
-                          </Badge>
+                          <div className="flex gap-2">
+                            <Badge className={getColorByType(receita.tipo)}>
+                              {receita.tipo}
+                            </Badge>
+                            {receita.plan === 'elite' && (
+                              <Badge className="bg-yellow-100 text-yellow-800">Elite</Badge>
+                            )}
+                            {receita.plan === 'premium' && (
+                              <Badge className="bg-purple-100 text-purple-800">Premium</Badge>
+                            )}
+                          </div>
                         </div>
                       </CardHeader>
                       <CardContent className="space-y-4">
@@ -234,7 +322,8 @@ export default function MeuPlano() {
                           <Button 
                             variant="outline" 
                             className="flex-1"
-                            onClick={() => navigate('/receita-completa')}
+                            onClick={() => handleViewRecipe(receita)}
+                            disabled={!hasAccess('premium-recipes') && receita.plan !== 'basic'}
                           >
                             Ver Receita Completa
                           </Button>
@@ -242,10 +331,17 @@ export default function MeuPlano() {
                             size="sm"
                             className="gradient-primary text-white"
                             onClick={() => handleAddToCart(receita)}
+                            disabled={!hasAccess('premium-recipes') && receita.plan !== 'basic'}
                           >
                             <ShoppingCart className="h-4 w-4" />
                           </Button>
                         </div>
+                        
+                        {!hasAccess('premium-recipes') && receita.plan !== 'basic' && (
+                          <div className="text-center text-sm text-muted-foreground bg-muted p-2 rounded">
+                            Disponível apenas para assinantes {receita.plan === 'elite' ? 'Elite' : 'Premium'}
+                          </div>
+                        )}
                       </CardContent>
                     </Card>
                   ))}
