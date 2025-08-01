@@ -19,16 +19,18 @@ const dayNames = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', '
 // Sistema de imagens dinâmicas que mudam por dia
 const getDynamicImageForExercise = (exerciseId: string, day: number) => {
   const imageVariations = [
-    'photo-1544367567-0f2fcb009e0b', // Yoga woman
-    'photo-1571019613454-1cb2f99b2d8b', // HIIT workout
-    'photo-1584464491033-06628f3a6b7b', // Strength training
-    'photo-1506629905607-0e2b5d3cc8e7', // Pilates
-    'photo-1593079831268-3381b0db4a77', // Stretching
-    'photo-1517836357463-d25dfeac3438', // CrossTraining
-    'photo-1518611012118-696072aa579a', // Push ups
-    'photo-1550259979-ed79b48d2a30', // Squats
-    'photo-1571019614242-c5c5dee9f50b', // Running
-    'photo-1581009146145-b5ef050c2e1e'  // Gym workout
+    'rFKUFzjPYiQ', // Woman doing yoga poses
+    'CQfNt66ttZM', // Person doing push-ups
+    'FjSRBNnGf2A', // Woman doing pilates
+    '5jctAMjz21A', // Person running outdoors
+    'FP7cfYPPUKM', // Woman doing stretching
+    'SFxYPGRyPOo', // Person doing strength training
+    'QX5hPKYPwGM', // Woman doing core exercises
+    'UJdHx5b-Y9Q', // Person doing cardio workout
+    '8RWYKKvNfQw', // Woman doing squats
+    'SwmkBvGvOOo', // Person doing HIIT workout
+    'QVmqNaIqSVU', // Woman doing abs exercises
+    '7kEpUPB8Y2I'  // Person doing full body workout
   ]
   
   // Combina o ID do exercício com o dia para gerar uma variação consistente
