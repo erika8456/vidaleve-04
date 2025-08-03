@@ -90,6 +90,8 @@ export default function AdminDashboard() {
         `)
         .order('created_at', { ascending: false })
 
+      console.log('Profiles data:', profiles)
+
       if (error) {
         toast.error('Erro ao carregar dados dos usuários')
         console.error(error)
@@ -97,12 +99,16 @@ export default function AdminDashboard() {
       }
 
       // Transform data to include subscription info
-      const usersWithSubscription = profiles?.map(profile => ({
-        ...profile,
-        subscription_tier: (profile.subscribers as any)?.[0]?.subscription_tier || 'trial',
-        subscribed: (profile.subscribers as any)?.[0]?.subscribed || false
-      })) || []
+      const usersWithSubscription = profiles?.map(profile => {
+        const subscriberData = (profile.subscribers as any)?.[0]
+        return {
+          ...profile,
+          subscription_tier: subscriberData?.subscription_tier || 'trial',
+          subscribed: subscriberData?.subscribed || false
+        }
+      }) || []
 
+      console.log('Users with subscription:', usersWithSubscription)
       setUsers(usersWithSubscription)
 
       // Calcular estatísticas
@@ -123,7 +129,7 @@ export default function AdminDashboard() {
         p.subscription_tier === 'trial' && !p.is_trial_active
       ).length
       
-      // Calcular receita (€7.99 para Basic, €12.99 para Premium, €19.99 para Elite)
+      // Calcular receita apenas dos assinantes ativos pagos (não trials)
       const totalRevenue = (basicSubscribers * 7.99) + (premiumSubscribers * 12.99) + (eliteSubscribers * 19.99)
 
       setStats({
