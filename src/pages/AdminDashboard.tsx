@@ -24,6 +24,7 @@ interface StatsData {
   activeTrials: number
   expiredTrials: number
   basicSubscribers: number
+  premiumSubscribers: number
   eliteSubscribers: number
   totalRevenue: number
 }
@@ -35,6 +36,7 @@ export default function AdminDashboard() {
     activeTrials: 0,
     expiredTrials: 0,
     basicSubscribers: 0,
+    premiumSubscribers: 0,
     eliteSubscribers: 0,
     totalRevenue: 0
   })
@@ -111,6 +113,9 @@ export default function AdminDashboard() {
       const basicSubscribers = usersWithSubscription.filter(p => 
         p.subscription_tier === 'basic' && p.subscribed
       ).length
+      const premiumSubscribers = usersWithSubscription.filter(p => 
+        p.subscription_tier === 'premium' && p.subscribed
+      ).length
       const eliteSubscribers = usersWithSubscription.filter(p => 
         p.subscription_tier === 'elite' && p.subscribed
       ).length
@@ -118,14 +123,15 @@ export default function AdminDashboard() {
         p.subscription_tier === 'trial' && !p.is_trial_active
       ).length
       
-      // Calcular receita (€7.99 para Basic, €19.99 para Elite)
-      const totalRevenue = (basicSubscribers * 7.99) + (eliteSubscribers * 19.99)
+      // Calcular receita (€7.99 para Basic, €12.99 para Premium, €19.99 para Elite)
+      const totalRevenue = (basicSubscribers * 7.99) + (premiumSubscribers * 12.99) + (eliteSubscribers * 19.99)
 
       setStats({
         totalUsers,
         activeTrials,
         expiredTrials,
         basicSubscribers,
+        premiumSubscribers,
         eliteSubscribers,
         totalRevenue
       })
@@ -207,7 +213,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-4 mb-8">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Total de Usuários</CardTitle>
@@ -240,6 +246,16 @@ export default function AdminDashboard() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Assinantes Premium</CardTitle>
+              <Users className="h-4 w-4 text-purple-600" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-purple-600">{stats.premiumSubscribers}</div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Assinantes Elite</CardTitle>
               <Crown className="h-4 w-4 text-yellow-600" />
             </CardHeader>
@@ -265,7 +281,7 @@ export default function AdminDashboard() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">€{stats.totalRevenue.toFixed(2)}</div>
-              <p className="text-xs text-muted-foreground">Basic: €7.99 | Elite: €19.99</p>
+              <p className="text-xs text-muted-foreground">Basic: €7.99 | Premium: €12.99 | Elite: €19.99</p>
             </CardContent>
           </Card>
         </div>
@@ -303,17 +319,20 @@ export default function AdminDashboard() {
                       <Badge 
                         variant={
                           user.subscription_tier === 'elite' ? "default" :
+                          user.subscription_tier === 'premium' ? "secondary" :
                           user.subscription_tier === 'basic' ? "secondary" : 
                           "outline"
                         }
                         className={
                           user.subscription_tier === 'elite' ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200" :
+                          user.subscription_tier === 'premium' ? "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200" :
                           user.subscription_tier === 'basic' ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200" : 
                           ""
                         }
                       >
                         {user.subscription_tier === 'elite' && <Crown className="w-3 h-3 mr-1" />}
                         {user.subscription_tier === 'elite' ? 'Elite' : 
+                         user.subscription_tier === 'premium' ? 'Premium' :
                          user.subscription_tier === 'basic' ? 'Basic' : 'Trial'}
                       </Badge>
                     </TableCell>
