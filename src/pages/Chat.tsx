@@ -16,7 +16,10 @@ interface Message {
 }
 export default function Chat() {
   const navigate = useNavigate();
-  const { hasAccess, subscription_tier } = useSubscription();
+  const {
+    hasAccess,
+    subscription_tier
+  } = useSubscription();
   const [messages, setMessages] = useState<Message[]>([{
     id: '1',
     content: 'Olá! Sou sua assistente nutricional especializada em pessoas com mais de 50 anos. Como posso ajudá-lo(a) hoje? 😊\n\nPosso te ajudar com:\n• Planos alimentares personalizados\n• Receitas saudáveis\n• Dicas de nutrição\n• Exercícios adequados\n• Acompanhamento do seu progresso',
@@ -129,13 +132,8 @@ export default function Chat() {
     setNewMessage(suggestion);
   };
   if (!hasAccess('chat')) {
-    return (
-      <div className="container mx-auto p-6 max-w-4xl">
-        <PlanRestrictionBanner 
-          currentPlan={subscription_tier}
-          requiredPlan="Elite"
-          featureName="Chat com IA"
-        />
+    return <div className="container mx-auto p-6 max-w-4xl">
+        <PlanRestrictionBanner currentPlan={subscription_tier} requiredPlan="Elite" featureName="Chat com IA" />
         <Card className="h-[600px] flex flex-col opacity-50">
           <div className="flex-1 flex items-center justify-center">
             <div className="text-center">
@@ -145,10 +143,8 @@ export default function Chat() {
             </div>
           </div>
         </Card>
-      </div>
-    )
+      </div>;
   }
-
   return <div className="max-w-4xl mx-auto h-[calc(100vh-8rem)] flex flex-col">
       {/* Trial Status */}
       {trialStatus && !trialStatus.subscription_active && <Card className={`p-4 mb-4 ${trialStatus.trial_expired ? 'bg-destructive/10 border-destructive' : 'bg-warning/10 border-warning'}`}>
@@ -165,14 +161,14 @@ export default function Chat() {
         </Card>}
 
       {/* Chat Header */}
-      <Card className="p-4 mb-4 gradient-primary text-white bg-slate-100">
+      <Card className="p-4 mb-4 gradient-primary text-white bg-gray-900 rounded-sm">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
-            <Bot className="h-6 w-6" />
+            <Bot className="h-6 w-6 bg-slate-950" />
           </div>
           <div>
-            <h2 className="text-xl font-semibold">Assistente 24/24</h2>
-            <p className="text-sm opacity-90">Online • Sempre disponível</p>
+            <h2 className="text-xl font-semibold text-slate-950">Assistente 24/24</h2>
+            <p className="text-sm opacity-90 text-slate-950">Online • Sempre disponível</p>
           </div>
         </div>
       </Card>
@@ -224,7 +220,7 @@ export default function Chat() {
         <div className="border-t border-border pt-4">
           <div className="flex gap-3">
             <Input value={newMessage} onChange={e => setNewMessage(e.target.value)} onKeyPress={handleKeyPress} placeholder="Digite sua pergunta sobre nutrição..." className="flex-1 text-lg py-3 px-4 rounded-xl" />
-            <Button onClick={handleSendMessage} disabled={!newMessage.trim() || isLoading} className="btn-senior px-6 gradient-primary text-white">
+            <Button onClick={handleSendMessage} disabled={!newMessage.trim() || isLoading} className="btn-senior px-6 gradient-primary bg-zinc-950 hover:bg-zinc-800 text-slate-950">
               {isLoading ? <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> : <Send className="h-5 w-5" />}
             </Button>
           </div>
