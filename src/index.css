@@ -20,11 +20,11 @@ All colors MUST be HSL. Focus on accessibility and readability.
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 15%;
 
-    /* Primary - Vibrant health green */
-    --primary: 134 61% 41%;
+    /* Primary - Orange-red gradient base */
+    --primary: 16 84% 55%;
     --primary-foreground: 0 0% 100%;
-    --primary-light: 134 61% 85%;
-    --primary-dark: 134 61% 25%;
+    --primary-light: 16 84% 85%;
+    --primary-dark: 16 84% 35%;
 
     /* Secondary - Warm, welcoming tones */
     --secondary: 142 20% 95%;
@@ -45,20 +45,20 @@ All colors MUST be HSL. Focus on accessibility and readability.
     /* Borders and inputs - High contrast for visibility */
     --border: 0 0% 90%;
     --input: 0 0% 100%;
-    --ring: 142 69% 58%;
+    --ring: 16 84% 55%;
 
     /* Radius - Gentle curves */
     --radius: 0.75rem;
 
-    /* Sidebar - Verde saudável e contraste alto */
-    --sidebar-background: 134 61% 41%;
+    /* Sidebar - Orange theme matching primary */
+    --sidebar-background: 16 84% 55%;
     --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 134 61% 85%;
-    --sidebar-primary-foreground: 134 61% 25%;
-    --sidebar-accent: 134 61% 35%;
+    --sidebar-primary: 16 84% 85%;
+    --sidebar-primary-foreground: 16 84% 35%;
+    --sidebar-accent: 16 84% 45%;
     --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 134 61% 30%;
-    --sidebar-ring: 134 61% 85%;
+    --sidebar-border: 16 84% 40%;
+    --sidebar-ring: 16 84% 85%;
 
     /* Typography scale for 50+ users */
     --text-base: 1.125rem; /* 18px - larger base size */
@@ -69,7 +69,7 @@ All colors MUST be HSL. Focus on accessibility and readability.
     --spacing-touch: 3rem; /* 48px - minimum touch target */
     --spacing-comfortable: 1.5rem; /* 24px - comfortable spacing */
 
-    /* Gradients for visual appeal */
+    /* Gradients for visual appeal - Orange theme */
     --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-dark)));
     --gradient-subtle: linear-gradient(180deg, hsl(var(--background)), hsl(var(--muted)));
 
