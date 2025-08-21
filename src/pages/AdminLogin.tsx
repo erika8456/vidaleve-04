@@ -28,14 +28,11 @@ export default function AdminLogin() {
         return
       }
 
-      // Check if user is an admin
-      const { data: adminData, error: adminError } = await supabase
-        .from('admins')
-        .select('role')
-        .eq('email', email)
-        .single()
+      // Check if user is an admin using secure function
+      const { data: isAdminData, error: adminError } = await supabase
+        .rpc('is_admin')
 
-      if (adminError || !adminData) {
+      if (adminError || !isAdminData) {
         toast.error('Acesso negado: não é um administrador')
         await supabase.auth.signOut()
         return
