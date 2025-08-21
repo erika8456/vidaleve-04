@@ -12,13 +12,30 @@ const BaixarApp = () => {
   const isAndroid = /Android/.test(navigator.userAgent)
   
   const handleDownloadAndroid = () => {
-    // For now, redirect to app info since APK generation requires build process
-    toast.info('Em breve o download direto do APK estará disponível!')
+    // Check if APK is available in Supabase storage or external link
+    const apkUrl = "https://savwzqtmbdkwzjlxvfeo.supabase.co/storage/v1/object/public/app-files/vida-leve.apk"
+    
+    // Try to download the APK
+    const link = document.createElement('a')
+    link.href = apkUrl
+    link.download = 'vida-leve.apk'
+    link.target = '_blank'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    
+    toast.success('Download do APK iniciado!')
   }
   
   const handleDownloadiOS = () => {
-    // For now, redirect to app info since App Store requires publishing
-    toast.info('Em breve na App Store!')
+    // Redirect to App Store or TestFlight
+    const appStoreUrl = "https://apps.apple.com/app/vida-leve"
+    const testFlightUrl = "https://testflight.apple.com/join/vida-leve"
+    
+    // For now, use TestFlight for beta testing
+    window.open(testFlightUrl, '_blank')
+    
+    toast.info('Redirecionando para o TestFlight...')
   }
 
   return (

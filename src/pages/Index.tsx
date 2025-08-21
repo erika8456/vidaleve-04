@@ -11,7 +11,7 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <DownloadAppBanner />
       {/* Hero Section */}
-      <section className="gradient-primary text-white py-20 px-6">
+      <section className="bg-gradient-to-br from-orange-500 to-red-600 text-white py-20 px-6">
         <div className="max-w-6xl mx-auto text-center">
           <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-6">
             <span className="text-3xl font-bold">VL</span>
