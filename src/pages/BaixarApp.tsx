@@ -1,14 +1,16 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Smartphone, Download, Apple, Globe, AlertCircle, Loader2 } from "lucide-react"
+import { Smartphone, Download, Apple, Globe, AlertCircle, Loader2, Settings } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import { toast } from "sonner"
 import { useAppFiles } from "@/hooks/useAppFiles"
+import { useAdmin } from "@/hooks/useAdmin"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 
 const BaixarApp = () => {
   const navigate = useNavigate()
   const { apkFile, loading, error } = useAppFiles()
+  const { isAdmin } = useAdmin()
   
   // Detect user's platform
   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
@@ -98,6 +100,19 @@ const BaixarApp = () => {
               <AlertCircle className="h-4 w-4" />
               <AlertDescription>
                 {error}. Entre em contato com o suporte se o problema persistir.
+                {isAdmin && (
+                  <div className="mt-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => navigate('/admin/app-manager')}
+                      className="text-xs"
+                    >
+                      <Settings className="h-3 w-3 mr-1" />
+                      Gerenciar APKs
+                    </Button>
+                  </div>
+                )}
               </AlertDescription>
             </Alert>
           )}
@@ -115,9 +130,10 @@ const BaixarApp = () => {
                     <CardTitle>Android</CardTitle>
                     <p className="text-muted-foreground">Para dispositivos Android 8.0+</p>
                     {apkFile && (
-                      <p className="text-xs text-muted-foreground">
-                        Tamanho: {formatFileSize(apkFile.size)}
-                      </p>
+                      <div className="text-xs text-muted-foreground space-y-1">
+                        <p>Tamanho: {formatFileSize(apkFile.size)}</p>
+                        <p>Versão: {apkFile.name.replace('.apk', '').replace('vida-leve-', '')}</p>
+                      </div>
                     )}
                   </div>
                 </div>

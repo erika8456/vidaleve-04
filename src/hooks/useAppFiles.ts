@@ -18,35 +18,71 @@ export function useAppFiles() {
     try {
       setLoading(true)
       setError(null)
+      
+      console.log('🔍 Searching for APK files in app-files bucket...')
 
-      // List all APK files from the app-files bucket
-      const { data: files, error: listError } = await supabase.storage
+      // List all files in root directory
+      const { data: rootFiles, error: rootError } = await supabase.storage
         .from('app-files')
         .list('', {
-          limit: 10,
+          limit: 50,
           sortBy: { column: 'created_at', order: 'desc' }
         })
 
-      if (listError) {
-        console.error('Error listing APK files:', listError)
-        setError('Erro ao carregar arquivo do app')
-        return
+      if (rootError) {
+        console.error('Error listing root files:', rootError)
       }
 
-      // Find the latest APK file
-      const apkFiles = files?.filter(file => file.name.endsWith('.apk')) || []
+      let allApkFiles: any[] = []
       
-      if (apkFiles.length === 0) {
+      if (rootFiles) {
+        console.log(`📁 Found ${rootFiles.length} files in root:`, rootFiles.map(f => f.name))
+        allApkFiles = rootFiles.filter(file => file.name.endsWith('.apk'))
+      }
+      
+      // Also search in common subdirectories
+      const searchPaths = ['releases', 'builds', 'android', 'apk']
+      
+      for (const path of searchPaths) {
+        try {
+          const { data: subFiles, error: subError } = await supabase.storage
+            .from('app-files')
+            .list(path, {
+              limit: 50,
+              sortBy: { column: 'created_at', order: 'desc' }
+            })
+            
+          if (subFiles && !subError) {
+            console.log(`📁 Found ${subFiles.length} files in ${path}/:`, subFiles.map(f => f.name))
+            const subApkFiles = subFiles
+              .filter(file => file.name.endsWith('.apk'))
+              .map(file => ({ ...file, path: `${path}/${file.name}` }))
+            allApkFiles.push(...subApkFiles)
+          }
+        } catch (err) {
+          console.log(`ℹ️  No files found in ${path}/`)
+        }
+      }
+
+      console.log(`🎯 Total APK files found: ${allApkFiles.length}`)
+      
+      if (allApkFiles.length === 0) {
+        console.log('❌ No APK files found in any location')
         setError('Nenhum APK disponível')
         return
       }
 
-      const latestApk = apkFiles[0]
+      // Sort by creation date and get the latest
+      allApkFiles.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+      const latestApk = allApkFiles[0]
+      const filePath = latestApk.path || latestApk.name
+      
+      console.log(`✅ Using latest APK: ${filePath}`)
       
       // Get public URL for the APK
       const { data: urlData } = supabase.storage
         .from('app-files')
-        .getPublicUrl(latestApk.name)
+        .getPublicUrl(filePath)
 
       setApkFile({
         name: latestApk.name,
