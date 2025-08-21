@@ -1,17 +1,14 @@
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { ArrowRight, Heart, Users, Target, MessageCircle, Download } from "lucide-react"
-import { useNavigate } from "react-router-dom"
-import { DownloadAppBanner } from "@/components/DownloadAppBanner"
-
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ArrowRight, Heart, Users, Target, MessageCircle, Download } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { DownloadAppBanner } from "@/components/DownloadAppBanner";
 const Index = () => {
-  const navigate = useNavigate()
-
-  return (
-    <div className="min-h-screen bg-background">
+  const navigate = useNavigate();
+  return <div className="min-h-screen bg-background">
       <DownloadAppBanner />
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-orange-500 to-red-600 text-white py-20 px-6">
+      <section className="bg-gradient-to-br from-orange-500 to-red-600 text-white py-20 px-6 bg-green-400">
         <div className="max-w-6xl mx-auto text-center">
           <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-6">
             <span className="text-3xl font-bold">VL</span>
@@ -24,23 +21,14 @@ const Index = () => {
             Emagreça com saúde e segurança, com o suporte da inteligência artificial.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button 
-              onClick={() => navigate('/login')}
-              className="btn-senior bg-white text-primary hover:bg-white/90 text-xl px-8 py-6"
-            >
+            <Button onClick={() => navigate('/login')} className="btn-senior bg-white text-primary hover:bg-white/90 text-xl px-8 py-6">
               Fazer Login
               <ArrowRight className="ml-2 h-6 w-6" />
             </Button>
-            <Button 
-              onClick={() => navigate('/assinatura')}
-              className="btn-senior bg-white/10 text-white border border-white/20 hover:bg-white/20 text-xl px-8 py-6"
-            >
+            <Button onClick={() => navigate('/assinatura')} className="btn-senior bg-white/10 text-white border border-white/20 hover:bg-white/20 text-xl px-8 py-6">
               Ver Planos
             </Button>
-            <Button 
-              onClick={() => navigate('/baixar-app')}
-              className="btn-senior bg-white/10 text-white border border-white/20 hover:bg-white/20 text-xl px-8 py-6"
-            >
+            <Button onClick={() => navigate('/baixar-app')} className="btn-senior bg-white/10 text-white border border-white/20 hover:bg-white/20 text-xl px-8 py-6">
               Baixar App
               <Download className="ml-2 h-6 w-6" />
             </Button>
@@ -112,23 +100,14 @@ const Index = () => {
             Junte-se a milhares de pessoas que já descobriram como emagrecer com saúde após os 50 anos.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button 
-              onClick={() => navigate('/cadastro')}
-              className="btn-senior gradient-primary text-white text-xl px-8 py-6"
-            >
+            <Button onClick={() => navigate('/cadastro')} className="btn-senior gradient-primary text-white text-xl px-8 py-6">
               Criar Conta Grátis
               <ArrowRight className="ml-2 h-6 w-6" />
             </Button>
-            <Button 
-              onClick={() => navigate('/assinatura')}
-              className="btn-senior bg-secondary text-secondary-foreground hover:bg-secondary/80 text-xl px-8 py-6"
-            >
+            <Button onClick={() => navigate('/assinatura')} className="btn-senior bg-secondary text-secondary-foreground hover:bg-secondary/80 text-xl px-8 py-6">
               Ver Planos
             </Button>
-            <Button 
-              onClick={() => navigate('/baixar-app')}
-              className="btn-senior bg-secondary text-secondary-foreground hover:bg-secondary/80 text-xl px-8 py-6"
-            >
+            <Button onClick={() => navigate('/baixar-app')} className="btn-senior bg-secondary text-secondary-foreground hover:bg-secondary/80 text-xl px-8 py-6">
               Baixar App
               <Download className="ml-2 h-6 w-6" />
             </Button>
@@ -146,8 +125,6 @@ const Index = () => {
           <p className="opacity-80">Nutrição inteligente para uma vida mais saudável</p>
         </div>
       </footer>
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
