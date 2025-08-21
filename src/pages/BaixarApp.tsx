@@ -1,30 +1,40 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Smartphone, Download, Apple, Globe } from "lucide-react"
+import { Smartphone, Download, Apple, Globe, AlertCircle, Loader2 } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import { toast } from "sonner"
+import { useAppFiles } from "@/hooks/useAppFiles"
+import { Alert, AlertDescription } from "@/components/ui/alert"
 
 const BaixarApp = () => {
   const navigate = useNavigate()
+  const { apkFile, loading, error } = useAppFiles()
   
   // Detect user's platform
   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
   const isAndroid = /Android/.test(navigator.userAgent)
   
   const handleDownloadAndroid = () => {
-    // Check if APK is available in Supabase storage or external link
-    const apkUrl = "https://savwzqtmbdkwzjlxvfeo.supabase.co/storage/v1/object/public/app-files/vida-leve.apk"
+    if (!apkFile) {
+      toast.error('APK não disponível no momento. Tente novamente mais tarde.')
+      return
+    }
     
     // Try to download the APK
     const link = document.createElement('a')
-    link.href = apkUrl
-    link.download = 'vida-leve.apk'
+    link.href = apkFile.url
+    link.download = apkFile.name
     link.target = '_blank'
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
     
     toast.success('Download do APK iniciado!')
+  }
+
+  const formatFileSize = (bytes: number) => {
+    const mb = bytes / (1024 * 1024)
+    return `${mb.toFixed(1)} MB`
   }
   
   const handleDownloadiOS = () => {
@@ -75,6 +85,23 @@ const BaixarApp = () => {
             </p>
           </div>
 
+          {/* Error/Loading States */}
+          {loading && (
+            <div className="flex items-center justify-center gap-3 mb-6">
+              <Loader2 className="h-5 w-5 animate-spin" />
+              <span>Carregando informações do app...</span>
+            </div>
+          )}
+
+          {error && (
+            <Alert className="mb-6">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>
+                {error}. Entre em contato com o suporte se o problema persistir.
+              </AlertDescription>
+            </Alert>
+          )}
+
           {/* Download Options */}
           <div className="grid md:grid-cols-2 gap-6 mb-12">
             {/* Android */}
@@ -87,6 +114,11 @@ const BaixarApp = () => {
                   <div>
                     <CardTitle>Android</CardTitle>
                     <p className="text-muted-foreground">Para dispositivos Android 8.0+</p>
+                    {apkFile && (
+                      <p className="text-xs text-muted-foreground">
+                        Tamanho: {formatFileSize(apkFile.size)}
+                      </p>
+                    )}
                   </div>
                 </div>
               </CardHeader>
@@ -95,14 +127,28 @@ const BaixarApp = () => {
                   onClick={handleDownloadAndroid}
                   className="w-full mb-4"
                   variant={isAndroid ? "default" : "outline"}
+                  disabled={loading || !apkFile}
                 >
                   <Download className="h-4 w-4 mr-2" />
-                  {isAndroid ? 'Baixar para seu Android' : 'Baixar APK'}
+                  {loading ? 'Carregando...' : isAndroid ? 'Baixar para seu Android' : 'Baixar APK'}
                 </Button>
+                
+                {isAndroid && (
+                  <Alert className="mb-4">
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertDescription className="text-xs">
+                      <strong>Instruções para Android:</strong><br />
+                      1. Após o download, abra o arquivo APK<br />
+                      2. Permita a instalação de "Fontes desconhecidas" se solicitado<br />
+                      3. Siga as instruções na tela para completar a instalação
+                    </AlertDescription>
+                  </Alert>
+                )}
+
                 <ul className="text-sm text-muted-foreground space-y-1">
                   <li>• Instalação direta (APK)</li>
                   <li>• Funciona offline</li>
-                  <li>• Atualizações automáticas</li>
+                  <li>• Todas as funcionalidades</li>
                 </ul>
               </CardContent>
             </Card>

@@ -21,6 +21,7 @@ import ImageBank from "./pages/ImageBank";
 import AdminLogin from "./pages/AdminLogin";
 import AdminRegister from "./pages/AdminRegister";
 import AdminDashboard from "./pages/AdminDashboard";
+import AdminAppManager from "./pages/AdminAppManager";
 import BaixarApp from "./pages/BaixarApp";
 import { AdminRoute } from "./components/AdminRoute";
 import NotFound from "./pages/NotFound";
@@ -129,6 +130,11 @@ const App = () => (
             <Route path="/admin/dashboard" element={
               <AdminRoute>
                 <AdminDashboard />
+              </AdminRoute>
+            } />
+            <Route path="/admin/app-manager" element={
+              <AdminRoute>
+                <AdminAppManager />
               </AdminRoute>
             } />
             <Route path="/baixar-app" element={<BaixarApp />} />
