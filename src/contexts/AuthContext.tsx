@@ -60,15 +60,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       password,
     })
     
-    // Check if user should be promoted to admin after successful login
-    if (!error && email === 'chacalabuata@gmail.com') {
-      try {
-        await supabase.rpc('promote_user_to_admin', { user_email: email })
-      } catch (adminError) {
-        console.log('Admin promotion error:', adminError)
-      }
-    }
-    
     return { error }
   }
 
