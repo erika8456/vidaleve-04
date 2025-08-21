@@ -22,14 +22,9 @@ const BaixarApp = () => {
       return
     }
     
-    // Try to download the APK
-    const link = document.createElement('a')
-    link.href = apkFile.url
-    link.download = apkFile.name
-    link.target = '_blank'
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
+    // Force download with direct navigation - works better on mobile
+    const downloadUrl = `${apkFile.url}?download=true&filename=${encodeURIComponent(apkFile.name)}`
+    window.location.href = downloadUrl
     
     toast.success('Download do APK iniciado!')
   }
@@ -148,6 +143,22 @@ const BaixarApp = () => {
                   <Download className="h-4 w-4 mr-2" />
                   {loading ? 'Carregando...' : isAndroid ? 'Baixar para seu Android' : 'Baixar APK'}
                 </Button>
+                
+                {/* Fallback direct link */}
+                {apkFile && (
+                  <div className="text-center mb-4">
+                    <p className="text-xs text-muted-foreground mb-2">
+                      Não funcionou? Tente este link direto:
+                    </p>
+                    <a 
+                      href={`${apkFile.url}?download=true&filename=${encodeURIComponent(apkFile.name)}`}
+                      className="text-xs text-primary underline hover:no-underline"
+                      target="_self"
+                    >
+                      Download Direto - {apkFile.name}
+                    </a>
+                  </div>
+                )}
                 
                 {isAndroid && (
                   <Alert className="mb-4">
