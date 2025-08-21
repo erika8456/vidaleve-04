@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { ArrowRight, Heart, Users, Target, MessageCircle } from "lucide-react"
+import { ArrowRight, Heart, Users, Target, MessageCircle, Download } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import { DownloadAppBanner } from "@/components/DownloadAppBanner"
 
@@ -36,6 +36,13 @@ const Index = () => {
               className="btn-senior bg-white/10 text-white border border-white/20 hover:bg-white/20 text-xl px-8 py-6"
             >
               Ver Planos
+            </Button>
+            <Button 
+              onClick={() => navigate('/baixar-app')}
+              className="btn-senior bg-white/10 text-white border border-white/20 hover:bg-white/20 text-xl px-8 py-6"
+            >
+              Baixar App
+              <Download className="ml-2 h-6 w-6" />
             </Button>
           </div>
         </div>
@@ -117,6 +124,13 @@ const Index = () => {
               className="btn-senior bg-secondary text-secondary-foreground hover:bg-secondary/80 text-xl px-8 py-6"
             >
               Ver Planos
+            </Button>
+            <Button 
+              onClick={() => navigate('/baixar-app')}
+              className="btn-senior bg-secondary text-secondary-foreground hover:bg-secondary/80 text-xl px-8 py-6"
+            >
+              Baixar App
+              <Download className="ml-2 h-6 w-6" />
             </Button>
           </div>
         </div>
