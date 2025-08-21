@@ -5,6 +5,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { supabase } from '@/integrations/supabase/client'
+import { useAuth } from '@/contexts/AuthContext'
+import { SUBSCRIPTION_PLANS } from '@/config/plans'
 import { toast } from 'sonner'
 import { Users, Euro, Trash2, LogOut, RefreshCw, Crown } from 'lucide-react'
 
@@ -42,14 +44,31 @@ export default function AdminDashboard() {
   })
   const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
+  const { user, signOut } = useAuth()
 
   useEffect(() => {
-    const adminLoggedIn = localStorage.getItem('adminLoggedIn')
-    if (!adminLoggedIn) {
+    // Check if user is authenticated and is an admin
+    if (!user) {
       navigate('/admin/login')
       return
     }
-    
+
+    // Verify admin status
+    const checkAdminStatus = async () => {
+      const { data, error } = await supabase
+        .from('admins')
+        .select('role')
+        .eq('user_id', user.id)
+        .single()
+
+      if (error || !data) {
+        toast.error('Acesso negado: não é um administrador')
+        navigate('/admin/login')
+        return
+      }
+    }
+
+    checkAdminStatus()
     fetchUsersData()
 
     // Setup realtime subscription for new users
@@ -75,7 +94,7 @@ export default function AdminDashboard() {
     return () => {
       supabase.removeChannel(channel)
     }
-  }, [navigate])
+  }, [navigate, user])
 
   const fetchUsersData = async () => {
     try {
@@ -129,8 +148,10 @@ export default function AdminDashboard() {
         p.subscription_tier === 'trial' && !p.is_trial_active
       ).length
       
-      // Calcular receita apenas dos assinantes ativos pagos (não trials)
-      const totalRevenue = (basicSubscribers * 7.99) + (premiumSubscribers * 12.99) + (eliteSubscribers * 19.99)
+      // Calcular receita real baseada nos preços dos planos
+      const totalRevenue = (basicSubscribers * SUBSCRIPTION_PLANS.basic.price) + 
+                          (premiumSubscribers * SUBSCRIPTION_PLANS.premium.price) + 
+                          (eliteSubscribers * SUBSCRIPTION_PLANS.elite.price)
 
       setStats({
         totalUsers,
@@ -176,8 +197,8 @@ export default function AdminDashboard() {
     }
   }
 
-  const handleLogout = () => {
-    localStorage.removeItem('adminLoggedIn')
+  const handleLogout = async () => {
+    await signOut()
     navigate('/')
   }
 
@@ -287,7 +308,7 @@ export default function AdminDashboard() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">€{stats.totalRevenue.toFixed(2)}</div>
-              <p className="text-xs text-muted-foreground">Basic: €7.99 | Premium: €12.99 | Elite: €19.99</p>
+              <p className="text-xs text-muted-foreground">Basic: €{SUBSCRIPTION_PLANS.basic.price} | Premium: €{SUBSCRIPTION_PLANS.premium.price} | Elite: €{SUBSCRIPTION_PLANS.elite.price}</p>
             </CardContent>
           </Card>
         </div>

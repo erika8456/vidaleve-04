@@ -2,12 +2,14 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ArrowRight, Heart, Users, Target, MessageCircle } from "lucide-react"
 import { useNavigate } from "react-router-dom"
+import { DownloadAppBanner } from "@/components/DownloadAppBanner"
 
 const Index = () => {
   const navigate = useNavigate()
 
   return (
     <div className="min-h-screen bg-background">
+      <DownloadAppBanner />
       {/* Hero Section */}
       <section className="gradient-primary text-white py-20 px-6">
         <div className="max-w-6xl mx-auto text-center">

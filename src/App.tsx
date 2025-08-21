@@ -19,7 +19,9 @@ import Cadastro from "./pages/Cadastro";
 import Assinatura from "./pages/Assinatura";
 import ImageBank from "./pages/ImageBank";
 import AdminLogin from "./pages/AdminLogin";
+import AdminRegister from "./pages/AdminRegister";
 import AdminDashboard from "./pages/AdminDashboard";
+import BaixarApp from "./pages/BaixarApp";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -122,6 +124,8 @@ const App = () => (
               </ProtectedRoute>
             } />
             <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin/register" element={<AdminRegister />} />
+            <Route path="/baixar-app" element={<BaixarApp />} />
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

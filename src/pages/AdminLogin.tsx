@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { useAuth } from '@/contexts/AuthContext'
+import { supabase } from '@/integrations/supabase/client'
 import { toast } from 'sonner'
 
 export default function AdminLogin() {
@@ -11,21 +13,42 @@ export default function AdminLogin() {
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
+  const { signIn } = useAuth()
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
 
-    // Credenciais de admin fixas para demonstração
-    if (email === 'chacalabuata@gmail.com' && password === '12345678') {
-      localStorage.setItem('adminLoggedIn', 'true')
+    try {
+      // Use Supabase authentication
+      const { error } = await signIn(email, password)
+      
+      if (error) {
+        toast.error('Credenciais inválidas')
+        return
+      }
+
+      // Check if user is an admin
+      const { data: adminData, error: adminError } = await supabase
+        .from('admins')
+        .select('role')
+        .eq('email', email)
+        .single()
+
+      if (adminError || !adminData) {
+        toast.error('Acesso negado: não é um administrador')
+        await supabase.auth.signOut()
+        return
+      }
+
       toast.success('Login de administrador realizado com sucesso!')
       navigate('/admin/dashboard')
-    } else {
-      toast.error('Credenciais de administrador inválidas')
+    } catch (error) {
+      toast.error('Erro ao fazer login')
+      console.error(error)
+    } finally {
+      setLoading(false)
     }
-
-    setLoading(false)
   }
 
   return (
