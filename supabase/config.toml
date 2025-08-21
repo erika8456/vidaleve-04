@@ -1,1 +1,7 @@
 project_id = "savwzqtmbdkwzjlxvfeo"
+
+[functions.admin-bootstrap]
+verify_jwt = true
+
+[functions.generate-app-icons]
+verify_jwt = true

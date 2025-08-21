@@ -33,7 +33,7 @@ export default function AdminRegister() {
     setLoading(true)
 
     try {
-      // Create admin user account
+      // Create user account
       const { error } = await signUp(email, password, fullName)
       
       if (error) {
@@ -41,24 +41,7 @@ export default function AdminRegister() {
         return
       }
 
-      // Add user to admins table
-      const { data: user } = await supabase.auth.getUser()
-      
-      if (user.user) {
-        const { error: adminError } = await supabase
-          .from('admins')
-          .insert({
-            user_id: user.user.id,
-            email: email,
-            role: 'admin'
-          })
-
-        if (adminError && !adminError.message.includes('duplicate key')) {
-          console.error('Error creating admin record:', adminError)
-        }
-      }
-
-      toast.success('Conta de administrador criada com sucesso!')
+      toast.success('Conta criada! Um administrador existente deve promovê-la para admin.')
       navigate('/admin/login')
     } catch (error) {
       toast.error('Erro ao criar conta de administrador')
