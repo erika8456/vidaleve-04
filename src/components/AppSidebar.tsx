@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { Home, MessageCircle, BookOpen, User, Settings, Menu, X, LogOut, Trophy, Smartphone } from "lucide-react";
+import { Home, MessageCircle, BookOpen, User, Settings, Menu, X, LogOut, Trophy, Smartphone, Stethoscope } from "lucide-react";
+import { BrandLogo } from "@/components/BrandLogo";
 import { Button } from "@/components/ui/button";
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarHeader, useSidebar } from "@/components/ui/sidebar";
 import { supabase } from "@/integrations/supabase/client";
@@ -16,6 +17,10 @@ const menuItems = [{
   title: "Exercícios",
   url: "/exercicios",
   icon: Trophy
+}, {
+  title: "Dr. Inteligente",
+  url: "/dr-inteligente",
+  icon: Stethoscope
 }, {
   title: "Baixar App",
   url: "/baixar-app",
@@ -59,13 +64,12 @@ export function AppSidebar() {
   return <Sidebar className={state === "collapsed" ? "w-16" : "w-72"} collapsible="icon">
       <SidebarHeader className="p-6 border-b border-border">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-            <span className="text-primary-foreground font-bold text-lg">V</span>
-          </div>
-          {state !== "collapsed" && <div>
-              
-              
-            </div>}
+          <BrandLogo size="sm" />
+          {state !== "collapsed" && (
+            <div>
+              <h2 className="text-lg font-bold text-sidebar-foreground">Vida Leve</h2>
+            </div>
+          )}
         </div>
       </SidebarHeader>
 

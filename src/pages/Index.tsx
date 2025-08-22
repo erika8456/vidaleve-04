@@ -3,15 +3,16 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowRight, Heart, Users, Target, MessageCircle, Download } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { DownloadAppBanner } from "@/components/DownloadAppBanner";
+import { BrandLogo } from "@/components/BrandLogo";
 const Index = () => {
   const navigate = useNavigate();
   return <div className="min-h-screen bg-background">
       <DownloadAppBanner />
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-orange-500 to-red-600 text-white py-20 px-6 bg-green-400">
+      <section className="bg-gradient-to-br from-emerald-500 to-green-600 text-white py-20 px-6">
         <div className="max-w-6xl mx-auto text-center">
           <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-6">
-            <span className="text-3xl font-bold">VL</span>
+            <BrandLogo size="lg" />
           </div>
           <h1 className="text-5xl md:text-6xl font-bold mb-6">
             Vida Leve
@@ -119,7 +120,7 @@ const Index = () => {
       <footer className="bg-primary text-primary-foreground py-12 px-6">
         <div className="max-w-6xl mx-auto text-center">
           <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
-            <span className="text-xl font-bold">VL</span>
+            <BrandLogo size="md" />
           </div>
           <h3 className="text-xl font-semibold mb-2">Vida Leve</h3>
           <p className="opacity-80">Nutrição inteligente para uma vida mais saudável</p>

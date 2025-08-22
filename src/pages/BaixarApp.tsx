@@ -4,6 +4,7 @@ import { Smartphone, Plus, Apple, Globe, Monitor, Share, Link, Download } from "
 import { useNavigate } from "react-router-dom"
 import { toast } from "sonner"
 import { useEffect, useState } from "react"
+import { BrandLogo } from "@/components/BrandLogo"
 
 const BaixarApp = () => {
   const navigate = useNavigate()
@@ -121,9 +122,7 @@ const BaixarApp = () => {
       <header className="bg-card border-b px-6 py-4">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-              <span className="text-primary-foreground font-bold">VL</span>
-            </div>
+            <BrandLogo size="sm" />
             <h1 className="text-2xl font-bold">Vida Leve</h1>
           </div>
           <Button

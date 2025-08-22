@@ -7,6 +7,7 @@ import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { Layout } from "./components/Layout";
 import Dashboard from "./pages/Dashboard";
 import Chat from "./pages/Chat";
+import DrInteligente from "./pages/DrInteligente";
 import ReceitaCompleta from "./pages/ReceitaCompleta";
 import MeuPlano from "./pages/MeuPlano";
 import Exercicios from "./pages/Exercicios";
@@ -90,6 +91,11 @@ const App = () => (
               </ProtectedRoute>
             } />
             <Route path="/chat" element={<Navigate to="/dashboard" replace />} />
+            <Route path="/dr-inteligente" element={
+              <ProtectedRoute>
+                <Layout><DrInteligente /></Layout>
+              </ProtectedRoute>
+            } />
             <Route path="/meu-plano" element={
               <ProtectedRoute>
                 <Layout><MeuPlano /></Layout>
