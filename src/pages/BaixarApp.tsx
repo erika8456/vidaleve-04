@@ -23,7 +23,14 @@ const BaixarApp = () => {
       setIsInstallable(true)
     }
     
+    const appInstalledHandler = () => {
+      toast.success('🎉 App instalado com sucesso! Você pode encontrá-lo na tela inicial do seu dispositivo.')
+      setIsInstallable(false)
+      setDeferredPrompt(null)
+    }
+    
     window.addEventListener('beforeinstallprompt', handler)
+    window.addEventListener('appinstalled', appInstalledHandler)
     
     // Check if app is already installed
     if (window.matchMedia('(display-mode: standalone)').matches) {
@@ -32,6 +39,7 @@ const BaixarApp = () => {
     
     return () => {
       window.removeEventListener('beforeinstallprompt', handler)
+      window.removeEventListener('appinstalled', appInstalledHandler)
     }
   }, [])
   

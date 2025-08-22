@@ -13,7 +13,7 @@ export function BrandLogo({ size = 'md', className = '' }: BrandLogoProps) {
 
   return (
     <img 
-      src="/logo.png" 
+      src="/lovable-uploads/a83c6b3a-7b08-47b8-b632-a71a96bd19c9.png" 
       alt="Vida Leve"
       className={`${sizeClasses[size]} object-contain ${className}`}
     />
