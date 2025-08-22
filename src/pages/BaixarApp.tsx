@@ -1,48 +1,71 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Smartphone, Download, Apple, Globe, AlertCircle, Loader2, Settings } from "lucide-react"
+import { Smartphone, Plus, Apple, Globe, Monitor } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import { toast } from "sonner"
-import { useAppFiles } from "@/hooks/useAppFiles"
-import { useAdmin } from "@/hooks/useAdmin"
-import { Alert, AlertDescription } from "@/components/ui/alert"
+import { useEffect, useState } from "react"
 
 const BaixarApp = () => {
   const navigate = useNavigate()
-  const { apkFile, loading, error } = useAppFiles()
-  const { isAdmin } = useAdmin()
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null)
+  const [isInstallable, setIsInstallable] = useState(false)
   
   // Detect user's platform
   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
   const isAndroid = /Android/.test(navigator.userAgent)
+  const isMobile = isIOS || isAndroid
   
-  const handleDownloadAndroid = () => {
-    if (!apkFile) {
-      toast.error('APK não disponível no momento. Tente novamente mais tarde.')
-      return
+  useEffect(() => {
+    const handler = (e: Event) => {
+      e.preventDefault()
+      setDeferredPrompt(e)
+      setIsInstallable(true)
     }
     
-    // Force download with direct navigation - works better on mobile
-    const downloadUrl = `${apkFile.url}?download=true&filename=${encodeURIComponent(apkFile.name)}`
-    window.location.href = downloadUrl
+    window.addEventListener('beforeinstallprompt', handler)
     
-    toast.success('Download do APK iniciado!')
-  }
-
-  const formatFileSize = (bytes: number) => {
-    const mb = bytes / (1024 * 1024)
-    return `${mb.toFixed(1)} MB`
+    // Check if app is already installed
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+      setIsInstallable(false)
+    }
+    
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handler)
+    }
+  }, [])
+  
+  const handleInstallPWA = async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt()
+      const { outcome } = await deferredPrompt.userChoice
+      
+      if (outcome === 'accepted') {
+        toast.success('App instalado com sucesso!')
+      } else {
+        toast.info('Instalação cancelada')
+      }
+      
+      setDeferredPrompt(null)
+      setIsInstallable(false)
+    } else {
+      // Manual installation instructions
+      if (isAndroid) {
+        toast.info('Para instalar: toque no menu do navegador (⋮) e selecione "Adicionar à tela inicial"')
+      } else if (isIOS) {
+        toast.info('Para instalar: toque no botão compartilhar (⎍) e selecione "Adicionar à Tela de Início"')
+      } else {
+        toast.info('Busque pela opção "Instalar app" no menu do seu navegador')
+      }
+    }
   }
   
-  const handleDownloadiOS = () => {
-    // Redirect to App Store or TestFlight
-    const appStoreUrl = "https://apps.apple.com/app/vida-leve"
-    const testFlightUrl = "https://testflight.apple.com/join/vida-leve"
-    
-    // For now, use TestFlight for beta testing
-    window.open(testFlightUrl, '_blank')
-    
-    toast.info('Redirecionando para o TestFlight...')
+  const handleOpenInBrowser = () => {
+    if (isIOS) {
+      toast.info('Abra este link no Safari para melhor experiência de instalação PWA')
+    } else {
+      toast.info('Use o Chrome ou Edge for melhor experiência de instalação')
+    }
+    window.open(window.location.href, '_blank')
   }
 
   return (
@@ -74,147 +97,125 @@ const BaixarApp = () => {
               <Smartphone className="h-10 w-10 text-primary" />
             </div>
             <h1 className="text-4xl font-bold mb-4">
-              Baixe o App Vida Leve
+              Instale o App Vida Leve
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Tenha acesso completo à sua nutrição personalizada direto no seu celular. 
-              Disponível para Android e iOS.
+              Acesse sua nutrição personalizada diretamente da tela inicial do seu dispositivo. 
+              Funciona offline e sincroniza automaticamente!
             </p>
           </div>
 
-          {/* Error/Loading States */}
-          {loading && (
-            <div className="flex items-center justify-center gap-3 mb-6">
-              <Loader2 className="h-5 w-5 animate-spin" />
-              <span>Carregando informações do app...</span>
-            </div>
-          )}
-
-          {error && (
-            <Alert className="mb-6">
-              <AlertCircle className="h-4 w-4" />
-              <AlertDescription>
-                {error}. Entre em contato com o suporte se o problema persistir.
-                {isAdmin && (
-                  <div className="mt-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => navigate('/admin/app-manager')}
-                      className="text-xs"
-                    >
-                      <Settings className="h-3 w-3 mr-1" />
-                      Gerenciar APKs
-                    </Button>
-                  </div>
-                )}
-              </AlertDescription>
-            </Alert>
-          )}
-
-          {/* Download Options */}
+          {/* Installation Options */}
           <div className="grid md:grid-cols-2 gap-6 mb-12">
-            {/* Android */}
+            {/* PWA Installation */}
             <Card className="relative overflow-hidden">
               <CardHeader>
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
-                    <Globe className="h-6 w-6 text-green-600 dark:text-green-400" />
+                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                    <Plus className="h-6 w-6 text-primary" />
                   </div>
                   <div>
-                    <CardTitle>Android</CardTitle>
-                    <p className="text-muted-foreground">Para dispositivos Android 8.0+</p>
-                    {apkFile && (
-                      <div className="text-xs text-muted-foreground space-y-1">
-                        <p>Tamanho: {formatFileSize(apkFile.size)}</p>
-                        <p>Versão: {apkFile.name.replace('.apk', '').replace('vida-leve-', '')}</p>
-                      </div>
-                    )}
+                    <CardTitle>Instalação Direta</CardTitle>
+                    <p className="text-muted-foreground">Funciona em todos os dispositivos</p>
                   </div>
                 </div>
               </CardHeader>
               <CardContent>
                 <Button 
-                  onClick={handleDownloadAndroid}
+                  onClick={handleInstallPWA}
                   className="w-full mb-4"
-                  variant={isAndroid ? "default" : "outline"}
-                  disabled={loading || !apkFile}
+                  variant="default"
                 >
-                  <Download className="h-4 w-4 mr-2" />
-                  {loading ? 'Carregando...' : isAndroid ? 'Baixar para seu Android' : 'Baixar APK'}
+                  <Plus className="h-4 w-4 mr-2" />
+                  {isInstallable ? 'Instalar App' : 'Ver Instruções de Instalação'}
                 </Button>
                 
-                {/* Fallback direct link */}
-                {apkFile && (
-                  <div className="text-center mb-4">
-                    <p className="text-xs text-muted-foreground mb-2">
-                      Não funcionou? Tente este link direto:
-                    </p>
-                    <a 
-                      href={`${apkFile.url}?download=true&filename=${encodeURIComponent(apkFile.name)}`}
-                      className="text-xs text-primary underline hover:no-underline"
-                      target="_self"
-                    >
-                      Download Direto - {apkFile.name}
-                    </a>
+                <div className="space-y-3 text-sm text-muted-foreground">
+                  <div>
+                    <strong className="text-foreground">Como instalar:</strong>
+                    {isAndroid && (
+                      <ul className="mt-1 space-y-1">
+                        <li>• Toque no menu do navegador (⋮)</li>
+                        <li>• Selecione "Adicionar à tela inicial"</li>
+                        <li>• Confirme a instalação</li>
+                      </ul>
+                    )}
+                    {isIOS && (
+                      <ul className="mt-1 space-y-1">
+                        <li>• Toque no botão compartilhar (⎍)</li>
+                        <li>• Selecione "Adicionar à Tela de Início"</li>
+                        <li>• Confirme a instalação</li>
+                      </ul>
+                    )}
+                    {!isMobile && (
+                      <ul className="mt-1 space-y-1">
+                        <li>• Procure pelo ícone de instalação na barra de endereços</li>
+                        <li>• Clique em "Instalar" quando aparecer</li>
+                        <li>• Ou use o menu do navegador</li>
+                      </ul>
+                    )}
                   </div>
-                )}
-                
-                {isAndroid && (
-                  <Alert className="mb-4">
-                    <AlertCircle className="h-4 w-4" />
-                    <AlertDescription className="text-xs">
-                      <strong>Instruções para Android:</strong><br />
-                      1. Após o download, abra o arquivo APK<br />
-                      2. Permita a instalação de "Fontes desconhecidas" se solicitado<br />
-                      3. Siga as instruções na tela para completar a instalação
-                    </AlertDescription>
-                  </Alert>
-                )}
+                </div>
 
-                <ul className="text-sm text-muted-foreground space-y-1">
-                  <li>• Instalação direta (APK)</li>
+                <ul className="text-sm text-muted-foreground space-y-1 mt-4">
+                  <li>• Acesso instantâneo da tela inicial</li>
                   <li>• Funciona offline</li>
-                  <li>• Todas as funcionalidades</li>
+                  <li>• Atualizações automáticas</li>
+                  <li>• Sem ocupar espaço extra</li>
                 </ul>
               </CardContent>
             </Card>
 
-            {/* iOS */}
+            {/* Browser Access */}
             <Card className="relative overflow-hidden">
               <CardHeader>
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">
-                    <Apple className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                    <Globe className="h-6 w-6 text-blue-600 dark:text-blue-400" />
                   </div>
                   <div>
-                    <CardTitle>iOS</CardTitle>
-                    <p className="text-muted-foreground">Para iPhone e iPad</p>
+                    <CardTitle>Navegador</CardTitle>
+                    <p className="text-muted-foreground">Acesso via browser</p>
                   </div>
                 </div>
               </CardHeader>
               <CardContent>
                 <Button 
-                  onClick={handleDownloadiOS}
+                  onClick={handleOpenInBrowser}
                   className="w-full mb-4"
-                  variant={isIOS ? "default" : "outline"}
+                  variant="outline"
                 >
-                  <Apple className="h-4 w-4 mr-2" />
-                  {isIOS ? 'Baixar para seu iPhone' : 'Baixar da App Store'}
+                  <Globe className="h-4 w-4 mr-2" />
+                  Abrir no Navegador
                 </Button>
+                
+                <div className="text-sm text-muted-foreground mb-4">
+                  <strong className="text-foreground">Navegadores recomendados:</strong>
+                  <ul className="mt-1 space-y-1">
+                    {isIOS && <li>• Safari (melhor experiência no iOS)</li>}
+                    {isAndroid && <li>• Chrome (melhor experiência no Android)</li>}
+                    {!isMobile && (
+                      <>
+                        <li>• Chrome ou Edge (desktop)</li>
+                        <li>• Firefox também suportado</li>
+                      </>
+                    )}
+                  </ul>
+                </div>
+
                 <ul className="text-sm text-muted-foreground space-y-1">
-                  <li>• Via App Store</li>
-                  <li>• Seguro e verificado</li>
-                  <li>• Integração com Health</li>
+                  <li>• Sem instalação necessária</li>
+                  <li>• Funciona em qualquer dispositivo</li>
+                  <li>• Sincronização em tempo real</li>
                 </ul>
               </CardContent>
             </Card>
           </div>
 
           {/* Features */}
-          <Card>
+          <Card className="mb-12">
             <CardHeader>
-              <CardTitle>O que você terá no app móvel:</CardTitle>
+              <CardTitle>Vantagens do App Instalado:</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid md:grid-cols-3 gap-6">
@@ -222,27 +223,27 @@ const BaixarApp = () => {
                   <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
                     <Smartphone className="h-6 w-6 text-primary" />
                   </div>
-                  <h3 className="font-semibold mb-2">Interface Otimizada</h3>
+                  <h3 className="font-semibold mb-2">Interface Nativa</h3>
                   <p className="text-sm text-muted-foreground">
-                    Design adaptado para facilitar o uso em dispositivos móveis
+                    Experiência de app nativo, sem barreiras do navegador
                   </p>
                 </div>
                 <div className="text-center">
                   <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <Download className="h-6 w-6 text-primary" />
+                    <Monitor className="h-6 w-6 text-primary" />
                   </div>
-                  <h3 className="font-semibold mb-2">Acesso Offline</h3>
+                  <h3 className="font-semibold mb-2">Funciona Offline</h3>
                   <p className="text-sm text-muted-foreground">
-                    Consulte seus planos e receitas mesmo sem internet
+                    Acesse seus planos e receitas mesmo sem internet
                   </p>
                 </div>
                 <div className="text-center">
                   <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
                     <Globe className="h-6 w-6 text-primary" />
                   </div>
-                  <h3 className="font-semibold mb-2">Sincronização</h3>
+                  <h3 className="font-semibold mb-2">Sempre Atualizado</h3>
                   <p className="text-sm text-muted-foreground">
-                    Seus dados sempre sincronizados entre web e móvel
+                    Atualizações automáticas e dados sincronizados
                   </p>
                 </div>
               </div>
@@ -250,7 +251,7 @@ const BaixarApp = () => {
           </Card>
 
           {/* Instructions */}
-          <div className="mt-12 text-center">
+          <div className="text-center">
             <p className="text-muted-foreground mb-4">
               Precisa de ajuda com a instalação?
             </p>
