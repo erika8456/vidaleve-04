@@ -1,0 +1,38 @@
+{
+  "name": "Vida Leve - Nutrição Inteligente 50+",
+  "short_name": "Vida Leve",
+  "description": "Plataforma de nutrição personalizada com IA para pessoas com mais de 50 anos",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone"],
+  "orientation": "portrait",
+  "theme_color": "#22c55e",
+  "background_color": "#fafafa",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-256.png", 
+      "sizes": "256x256",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-384.png",
+      "sizes": "384x384", 
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png", 
+      "purpose": "any maskable"
+    }
+  ]
+}

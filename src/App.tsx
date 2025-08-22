@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { Layout } from "./components/Layout";
+import { PWAComponents } from "./components/PWAComponents";
 import Dashboard from "./pages/Dashboard";
 import Chat from "./pages/Chat";
 import DrInteligente from "./pages/DrInteligente";
@@ -137,6 +138,9 @@ const App = () => (
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
+          
+          {/* Global PWA Components */}
+          <PWAComponents />
         </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
