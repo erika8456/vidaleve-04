@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Smartphone, Plus, Apple, Globe, Monitor } from "lucide-react"
+import { Smartphone, Plus, Apple, Globe, Monitor, Share, Link, Download } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import { toast } from "sonner"
 import { useEffect, useState } from "react"
@@ -66,6 +66,53 @@ const BaixarApp = () => {
       toast.info('Use o Chrome ou Edge for melhor experiência de instalação')
     }
     window.open(window.location.href, '_blank')
+  }
+
+  const handleDirectDownload = () => {
+    const appUrl = window.location.origin
+    window.open(appUrl, '_blank')
+    toast.success('App aberto em nova aba!')
+  }
+
+  const handleShareApp = async () => {
+    const appUrl = window.location.origin
+    const shareData = {
+      title: 'App Vida Leve',
+      text: 'Baixe o app Vida Leve - Sua nutrição personalizada!',
+      url: appUrl
+    }
+
+    if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+      try {
+        await navigator.share(shareData)
+        toast.success('App compartilhado!')
+      } catch (error) {
+        if (error.name !== 'AbortError') {
+          // Fallback to copy
+          handleCopyLink()
+        }
+      }
+    } else {
+      // Fallback to copy
+      handleCopyLink()
+    }
+  }
+
+  const handleCopyLink = async () => {
+    const appUrl = window.location.origin
+    try {
+      await navigator.clipboard.writeText(appUrl)
+      toast.success('Link copiado para área de transferência!')
+    } catch (error) {
+      // Fallback for older browsers
+      const textArea = document.createElement('textarea')
+      textArea.value = appUrl
+      document.body.appendChild(textArea)
+      textArea.select()
+      document.execCommand('copy')
+      document.body.removeChild(textArea)
+      toast.success('Link copiado!')
+    }
   }
 
   return (
@@ -211,6 +258,46 @@ const BaixarApp = () => {
               </CardContent>
             </Card>
           </div>
+
+          {/* Direct Download & Share Options */}
+          <Card className="mb-12">
+            <CardHeader>
+              <CardTitle className="text-center">Acesso Direto ao App</CardTitle>
+              <p className="text-center text-muted-foreground">
+                Abra o app diretamente ou compartilhe com amigos
+              </p>
+            </CardHeader>
+            <CardContent>
+              <div className="grid md:grid-cols-3 gap-4">
+                <Button 
+                  onClick={handleDirectDownload}
+                  className="w-full"
+                  variant="default"
+                >
+                  <Download className="h-4 w-4 mr-2" />
+                  Baixar App (Link Direto)
+                </Button>
+                
+                <Button 
+                  onClick={handleShareApp}
+                  className="w-full"
+                  variant="outline"
+                >
+                  <Share className="h-4 w-4 mr-2" />
+                  Compartilhar
+                </Button>
+                
+                <Button 
+                  onClick={handleCopyLink}
+                  className="w-full"
+                  variant="outline"
+                >
+                  <Link className="h-4 w-4 mr-2" />
+                  Copiar Link
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
 
           {/* Features */}
           <Card className="mb-12">
