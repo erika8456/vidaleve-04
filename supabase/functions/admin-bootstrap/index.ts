@@ -88,7 +88,6 @@ serve(async (req) => {
         .from('admins')
         .insert({
           user_id: user.user.id,
-          email: email,
           role: 'admin'
         })
 
