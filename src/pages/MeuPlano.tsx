@@ -246,7 +246,7 @@ export default function MeuPlano() {
         </CardHeader>
         <CardContent>
           <Tabs value={selectedDay} onValueChange={setSelectedDay}>
-            <TabsList className="grid w-full grid-cols-7 mb-6">
+            <TabsList className="flex w-full overflow-x-auto no-scrollbar mb-6 md:grid md:grid-cols-7">
               {days.map((day) => {
                 const dayDate = new Date()
                 dayDate.setDate(dayDate.getDate() + days.indexOf(day) - new Date().getDay() + 1)
@@ -256,14 +256,16 @@ export default function MeuPlano() {
                   <TabsTrigger 
                     key={day.id} 
                     value={day.id}
-                    className={`text-sm p-3 ${isToday ? 'ring-2 ring-primary' : ''}`}
+                    className={`text-sm p-3 min-w-[85px] flex-shrink-0 ${isToday ? 'ring-2 ring-primary' : ''}`}
                   >
                     <div className="text-center">
-                      <div className="font-semibold">{day.name}</div>
+                      <div className="font-semibold">
+                        {day.name}
+                        {isToday && <span className="text-primary"> (Hoje)</span>}
+                      </div>
                       <div className="text-xs text-muted-foreground">
                         {dayDate.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })}
                       </div>
-                      {isToday && <div className="text-xs text-primary font-bold">Hoje</div>}
                     </div>
                   </TabsTrigger>
                 )
