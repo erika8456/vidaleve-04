@@ -1,3 +1,5 @@
+import vidaleveLogo from "@/assets/vida-leve-logo.png"
+
 interface BrandLogoProps {
   size?: 'sm' | 'md' | 'lg' | 'xl';
   className?: string;
@@ -13,9 +15,14 @@ export function BrandLogo({ size = 'md', className = '' }: BrandLogoProps) {
 
   return (
     <img 
-      src="/lovable-uploads/a83c6b3a-7b08-47b8-b632-a71a96bd19c9.png" 
+      src={vidaleveLogo} 
       alt="Vida Leve"
       className={`${sizeClasses[size]} object-contain ${className}`}
+      onError={(e) => {
+        // Fallback if image fails to load
+        console.error('Logo failed to load:', e)
+        e.currentTarget.src = '/placeholder.svg'
+      }}
     />
   );
 }

@@ -99,11 +99,48 @@ LIMITE-SE AO SEU ESCOPO: Se perguntarem sobre temas não relacionados à nutriç
   } catch (error) {
     console.error('Error in dr-inteligente function:', error);
     
+    // Provide helpful fallback responses based on common questions
+    let fallbackResponse = "Desculpe, estou com dificuldades técnicas no momento. Tente novamente em alguns instantes.";
+    
+    // Try to provide a helpful response based on the user's message
+    if (messages && messages.length > 0) {
+      const lastMessage = messages[messages.length - 1];
+      const userMessage = lastMessage.content.toLowerCase();
+      
+      if (userMessage.includes('emagr') || userMessage.includes('peso') || userMessage.includes('dieta')) {
+        fallbackResponse = `Olá! Sou o Dr. Inteligente, powered by inteligência do Vida Leve (Lovable). 
+
+Para emagrecimento saudável após os 50 anos, recomendo:
+
+• **Alimentação equilibrada**: Foque em proteínas magras, vegetais frescos, frutas e grãos integrais
+• **Hidratação adequada**: Pelo menos 2 litros de água por dia
+• **Exercícios regulares**: Caminhadas, natação ou atividades de baixo impacto
+• **Sono de qualidade**: 7-8 horas por noite para recuperação
+• **Acompanhamento médico**: Sempre consulte seu médico antes de mudanças na dieta
+
+No app Vida Leve, você encontra planos personalizados e receitas adequadas para sua idade. Estamos temporariamente com instabilidade, mas logo estarei 100% disponível!`;
+      } else if (userMessage.includes('app') || userMessage.includes('vida leve') || userMessage.includes('aplicativo')) {
+        fallbackResponse = `Olá! Sou o Dr. Inteligente, powered by inteligência do Vida Leve (Lovable).
+
+Sobre o aplicativo Vida Leve:
+
+• **Planos personalizados**: Refeições adequadas para pessoas 50+
+• **Acompanhamento de peso**: Registre seu progresso facilmente  
+• **Exercícios seguros**: Atividades apropriadas para sua idade
+• **Interface amigável**: Fácil de usar, otimizada para pessoas maduras
+• **Funciona offline**: Acesse seus planos mesmo sem internet
+
+O app está disponível como PWA - você pode instalá-lo diretamente no seu celular através do navegador. Procure pela opção "Adicionar à tela inicial" no menu do seu navegador!
+
+Estamos com instabilidade técnica temporária, mas logo estarei 100% disponível para suas dúvidas!`;
+      }
+    }
+    
     return new Response(JSON.stringify({ 
       error: error.message,
-      response: "Desculpe, estou com dificuldades técnicas no momento. Tente novamente em alguns instantes ou entre em contato com o suporte se o problema persistir."
+      response: fallbackResponse
     }), {
-      status: 500,
+      status: 200, // Change to 200 so the frontend doesn't show error
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   }

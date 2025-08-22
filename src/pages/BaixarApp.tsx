@@ -3,70 +3,17 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Smartphone, Plus, Apple, Globe, Monitor, Share, Link, Download } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import { toast } from "sonner"
-import { useEffect, useState } from "react"
 import { BrandLogo } from "@/components/BrandLogo"
+import { useInstallManager } from "@/components/InstallManager"
 
 const BaixarApp = () => {
   const navigate = useNavigate()
-  const [deferredPrompt, setDeferredPrompt] = useState<any>(null)
-  const [isInstallable, setIsInstallable] = useState(false)
+  const { isInstallable, isInstalled, installApp, canInstall } = useInstallManager()
   
   // Detect user's platform
   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
   const isAndroid = /Android/.test(navigator.userAgent)
   const isMobile = isIOS || isAndroid
-  
-  useEffect(() => {
-    const handler = (e: Event) => {
-      e.preventDefault()
-      setDeferredPrompt(e)
-      setIsInstallable(true)
-    }
-    
-    const appInstalledHandler = () => {
-      toast.success('🎉 App instalado com sucesso! Você pode encontrá-lo na tela inicial do seu dispositivo.')
-      setIsInstallable(false)
-      setDeferredPrompt(null)
-    }
-    
-    window.addEventListener('beforeinstallprompt', handler)
-    window.addEventListener('appinstalled', appInstalledHandler)
-    
-    // Check if app is already installed
-    if (window.matchMedia('(display-mode: standalone)').matches) {
-      setIsInstallable(false)
-    }
-    
-    return () => {
-      window.removeEventListener('beforeinstallprompt', handler)
-      window.removeEventListener('appinstalled', appInstalledHandler)
-    }
-  }, [])
-  
-  const handleInstallPWA = async () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt()
-      const { outcome } = await deferredPrompt.userChoice
-      
-      if (outcome === 'accepted') {
-        toast.success('App instalado com sucesso!')
-      } else {
-        toast.info('Instalação cancelada')
-      }
-      
-      setDeferredPrompt(null)
-      setIsInstallable(false)
-    } else {
-      // Manual installation instructions
-      if (isAndroid) {
-        toast.info('Para instalar: toque no menu do navegador (⋮) e selecione "Adicionar à tela inicial"')
-      } else if (isIOS) {
-        toast.info('Para instalar: toque no botão compartilhar (⎍) e selecione "Adicionar à Tela de Início"')
-      } else {
-        toast.info('Busque pela opção "Instalar app" no menu do seu navegador')
-      }
-    }
-  }
   
   const handleOpenInBrowser = () => {
     if (isIOS) {
@@ -175,14 +122,21 @@ const BaixarApp = () => {
                 </div>
               </CardHeader>
               <CardContent>
-                <Button 
-                  onClick={handleInstallPWA}
-                  className="w-full mb-4"
-                  variant="default"
-                >
-                  <Plus className="h-4 w-4 mr-2" />
-                  {isInstallable ? 'Instalar App' : 'Ver Instruções de Instalação'}
-                </Button>
+                {isInstalled ? (
+                  <div className="text-center p-4 bg-primary/10 rounded-lg mb-4">
+                    <p className="text-primary font-medium">✅ App já instalado!</p>
+                    <p className="text-sm text-muted-foreground">Você pode encontrá-lo na tela inicial</p>
+                  </div>
+                ) : (
+                  <Button 
+                    onClick={installApp}
+                    className="w-full mb-4"
+                    variant="default"
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    {canInstall ? 'Instalar App' : 'Ver Instruções de Instalação'}
+                  </Button>
+                )}
                 
                 <div className="space-y-3 text-sm text-muted-foreground">
                   <div>

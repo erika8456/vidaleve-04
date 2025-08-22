@@ -3,13 +3,15 @@ import { Card } from "@/components/ui/card"
 import { Smartphone, Download, X } from "lucide-react"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { useInstallManager } from "./InstallManager"
 
 export function DownloadAppBanner() {
   const [isVisible, setIsVisible] = useState(true)
   const navigate = useNavigate()
+  const { isInstalled, canInstall, installApp } = useInstallManager()
 
-  // Don't show if user dismissed it
-  if (!isVisible) return null
+  // Don't show if user dismissed it or app is already installed
+  if (!isVisible || isInstalled) return null
 
   // Detect mobile device
   const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
@@ -31,15 +33,27 @@ export function DownloadAppBanner() {
             Tenha o Vida Leve sempre com você
           </p>
         </div>
-        <Button
-          size="sm"
-          variant="secondary"
-          onClick={() => navigate('/baixar-app')}
-          className="flex-shrink-0"
-        >
-          <Download className="h-4 w-4 mr-1" />
-          Baixar
-        </Button>
+        {canInstall ? (
+          <Button
+            size="sm"
+            variant="secondary"
+            onClick={installApp}
+            className="flex-shrink-0"
+          >
+            <Download className="h-4 w-4 mr-1" />
+            Instalar
+          </Button>
+        ) : (
+          <Button
+            size="sm"
+            variant="secondary"
+            onClick={() => navigate('/baixar-app')}
+            className="flex-shrink-0"
+          >
+            <Download className="h-4 w-4 mr-1" />
+            Baixar
+          </Button>
+        )}
         <Button
           size="sm"
           variant="ghost"
