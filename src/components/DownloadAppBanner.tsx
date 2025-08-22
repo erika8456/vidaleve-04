@@ -18,7 +18,7 @@ export function DownloadAppBanner() {
   if (!isMobile) return null
 
   return (
-    <Card className="fixed bottom-4 left-4 right-4 z-50 bg-gradient-to-r from-primary to-primary-variant text-primary-foreground shadow-lg">
+    <Card className="fixed bottom-4 left-4 right-4 z-50 bg-gradient-to-r from-primary to-primary-dark text-primary-foreground shadow-lg">
       <div className="flex items-center gap-3 p-4">
         <div className="flex-shrink-0">
           <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
