@@ -174,58 +174,7 @@ export default function Chat() {
       </Card>
 
       {/* Messages Container */}
-      <Card className="flex-1 flex flex-col p-4 overflow-hidden">
-        <div className="flex-1 overflow-y-auto space-y-4 pb-4">
-          {messages.map(message => <div key={message.id} className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-              <div className={`max-w-[80%] flex gap-3 ${message.sender === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
-                {/* Avatar */}
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${message.sender === 'user' ? 'bg-primary text-primary-foreground' : 'bg-accent text-accent-foreground'}`}>
-                  {message.sender === 'user' ? <User className="h-5 w-5" /> : <Bot className="h-5 w-5" />}
-                </div>
-
-                {/* Message Bubble */}
-                <div className={`rounded-2xl px-4 py-3 ${message.sender === 'user' ? 'bg-primary text-primary-foreground' : 'bg-muted text-foreground'}`}>
-                  <p className="text-senior whitespace-pre-line">{message.content}</p>
-                  <p className={`text-xs mt-2 ${message.sender === 'user' ? 'text-primary-foreground/70' : 'text-muted-foreground'}`}>
-                    {message.timestamp.toLocaleTimeString('pt-BR', {
-                  hour: '2-digit',
-                  minute: '2-digit'
-                })}
-                  </p>
-                </div>
-              </div>
-            </div>)}
-          {isLoading && <div className="flex justify-start">
-              <div className="max-w-[80%] flex gap-3">
-                <div className="w-10 h-10 rounded-full bg-accent text-accent-foreground flex items-center justify-center">
-                  <Bot className="h-5 w-5" />
-                </div>
-                <div className="bg-muted rounded-2xl px-4 py-3">
-                  <div className="flex gap-1">
-                    <div className="w-2 h-2 bg-primary rounded-full animate-bounce"></div>
-                    <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{
-                  animationDelay: '0.1s'
-                }}></div>
-                    <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{
-                  animationDelay: '0.2s'
-                }}></div>
-                  </div>
-                </div>
-              </div>
-            </div>}
-          <div ref={messagesEndRef} />
-        </div>
-
-        {/* Input Area */}
-        <div className="border-t border-border pt-4">
-          <div className="flex gap-3">
-            <Input value={newMessage} onChange={e => setNewMessage(e.target.value)} onKeyPress={handleKeyPress} placeholder="Digite sua pergunta sobre nutrição..." className="flex-1 text-lg py-3 px-4 rounded-xl" />
-            <Button onClick={handleSendMessage} disabled={!newMessage.trim() || isLoading} className="btn-senior px-6 gradient-primary bg-zinc-950 hover:bg-zinc-800 text-slate-950">
-              {isLoading ? <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> : <Send className="h-5 w-5" />}
-            </Button>
-          </div>
-        </div>
-      </Card>
+      
 
       {/* Quick Suggestions */}
       <div className="mt-4 flex flex-wrap gap-2">
