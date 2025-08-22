@@ -64,13 +64,13 @@ const Index = () => {
             <Card className="card-senior text-center hover:shadow-[var(--shadow-medium)] transition-shadow">
               <CardHeader>
                 <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <MessageCircle className="h-8 w-8 text-primary" />
+                  <Users className="h-8 w-8 text-primary" />
                 </div>
-                <CardTitle className="text-xl">Assistente IA 24h</CardTitle>
+                <CardTitle className="text-xl">Acompanhamento Completo</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground text-lg">
-                  Chat inteligente sempre disponível para tirar dúvidas e dar suporte nutricional.
+                  Monitore seu progresso com ferramentas avançadas e relatórios personalizados.
                 </p>
               </CardContent>
             </Card>

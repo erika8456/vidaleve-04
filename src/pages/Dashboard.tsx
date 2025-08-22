@@ -36,9 +36,6 @@ export default function Dashboard() {
   
   // Initialize exercise reminders
   useExerciseReminders();
-  const handleChatClick = () => {
-    navigate('/chat');
-  };
   const handleViewPlanClick = () => {
     navigate('/plano-refeicoes');
   };
@@ -198,26 +195,7 @@ export default function Dashboard() {
       </div>
 
       {/* Quick Actions */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-        <Card className={`card-senior hover:shadow-[var(--shadow-medium)] transition-shadow ${hasAccess('chat') ? 'cursor-pointer' : 'opacity-50 cursor-not-allowed'}`}>
-          <CardContent className="p-6 text-center">
-            <MessageCircle className="h-12 w-12 text-primary mx-auto mb-4" />
-            <h3 className="text-xl font-semibold mb-2">Chat com IA</h3>
-            <p className="text-muted-foreground mb-4">
-              Tire suas dúvidas e receba dicas personalizadas
-            </p>
-            {!hasAccess('chat') && (
-              <p className="text-xs text-red-500 mb-2">Plano Elite necessário</p>
-            )}
-            <Button 
-              className="btn-senior w-full" 
-              onClick={hasAccess('chat') ? handleChatClick : undefined}
-              disabled={!hasAccess('chat')}
-            >
-              Conversar Agora
-            </Button>
-          </CardContent>
-        </Card>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
 
         <Card className={`card-senior hover:shadow-[var(--shadow-medium)] transition-shadow ${hasAccess('meal-plan') ? 'cursor-pointer' : 'opacity-50 cursor-not-allowed'}`}>
           <CardContent className="p-6 text-center">

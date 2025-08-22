@@ -340,11 +340,8 @@ const BaixarApp = () => {
           {/* Instructions */}
           <div className="text-center">
             <p className="text-muted-foreground mb-4">
-              Precisa de ajuda com a instalação?
+              Precisa de ajuda com a instalação? Entre em contato conosco através do dashboard.
             </p>
-            <Button variant="outline" onClick={() => navigate('/chat')}>
-              Falar com Suporte
-            </Button>
           </div>
         </div>
       </main>

@@ -9,7 +9,7 @@ const plans = [{
   price: "4",
   period: "mês",
   description: "Perfeito para começar sua jornada",
-  features: ["Plano alimentar personalizado", "Chat com IA básico", "Receitas saudáveis", "Suporte por email"],
+  features: ["Plano alimentar personalizado", "Receitas saudáveis", "Acompanhamento de peso", "Suporte por email"],
   icon: Star,
   popular: false,
   link: "https://buy.stripe.com/7sY4gAdg68xkgDg9r92sM02"
@@ -18,7 +18,7 @@ const plans = [{
   price: "10",
   period: "mês",
   description: "Mais completo e personalizado",
-  features: ["Tudo do plano Básico", "Chat IA avançado 24h", "Planos semanais personalizados", "Acompanhamento nutricional", "Relatórios de progresso", "Suporte prioritário"],
+  features: ["Tudo do plano Básico", "Exercícios personalizados", "Planos semanais personalizados", "Acompanhamento nutricional", "Relatórios de progresso", "Suporte prioritário"],
   icon: Crown,
   popular: true,
   link: "https://buy.stripe.com/14AcN6eka00O3Qu5aT2sM04"

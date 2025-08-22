@@ -89,11 +89,7 @@ const App = () => (
                 <Layout><Dashboard /></Layout>
               </ProtectedRoute>
             } />
-            <Route path="/chat" element={
-              <ProtectedRoute>
-                <Layout><Chat /></Layout>
-              </ProtectedRoute>
-            } />
+            <Route path="/chat" element={<Navigate to="/dashboard" replace />} />
             <Route path="/meu-plano" element={
               <ProtectedRoute>
                 <Layout><MeuPlano /></Layout>

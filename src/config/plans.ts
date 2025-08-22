@@ -3,7 +3,7 @@ export const SUBSCRIPTION_PLANS = {
     name: 'Basic',
     price: 7.99,
     currency: 'EUR',
-    features: ['Chat IA', 'Planos de Refeição', 'Acompanhamento de Peso'],
+    features: ['Planos de Refeição', 'Acompanhamento de Peso', 'Receitas Básicas'],
   },
   premium: {
     name: 'Premium', 

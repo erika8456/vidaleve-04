@@ -9,10 +9,6 @@ const menuItems = [{
   url: "/dashboard",
   icon: Home
 }, {
-  title: "Chat IA",
-  url: "/chat",
-  icon: MessageCircle
-}, {
   title: "Meu Plano",
   url: "/meu-plano",
   icon: BookOpen
